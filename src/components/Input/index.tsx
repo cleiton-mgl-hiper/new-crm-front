@@ -1,0 +1,68 @@
+import { FC } from "react";
+import IProps from "./interfaces/IProps";
+import * as S from "./styles";
+import { TextBox, Validator } from "devextreme-react";
+import { CompareRule, EmailRule, RequiredRule, StringLengthRule, CustomRule } from "devextreme-react/data-grid";
+
+const Input: FC<IProps> = ({
+	name,
+	mode = "text",
+	showClearButton = false,
+	required = false,
+	rounded = "md",
+	errors = [],
+	compareRule = null,
+	minLength = 0,
+	maxLength,
+	autoFocus = false,
+	label = "",
+	nativeValidations = true,
+	onBlur,
+	onChange,
+	value,
+}) => {
+	if (label[label.length - 1] !== ":") label = label.concat(":");
+
+	return (
+		<S.Container rounded={rounded} errors={errors} required={required}>
+			<TextBox
+				name={name}
+				mode={mode}
+				labelMode="floating"
+				label={required ? "*".concat(label || "") : label}
+				stylingMode="filled"
+				showClearButton={showClearButton}
+				height="40px"
+				onInitialized={(e) => {
+					setTimeout(function () {
+						if (autoFocus) e.component?.focus();
+						else e.component?.blur();
+					}, 0);
+				}}
+				valueChangeEvent="change"
+				maxLength={`${maxLength}`}
+				onFocusOut={(e) => onBlur && onBlur(e.event)}
+				onValueChanged={(e) => onChange && onChange(e.value, e.event)}
+				value={value}
+			>
+				<Validator>
+					{errors?.length ? errors.map((err, i) => <CustomRule key={i} message={err} validationCallback={() => false} />) : null}
+
+					{nativeValidations ? (
+						<>
+							{mode === "email" ? <EmailRule message="Email inválido" /> : null}
+							{required ? <RequiredRule message="Campo obrigatório" /> : null}
+							{compareRule ? <CompareRule message="Confirmação diferente do valor original" comparisonTarget={compareRule} /> : null}
+							{maxLength ? <StringLengthRule message={`Tamanho máximo é de ${maxLength} caracteres`} max={maxLength?.toString()} /> : null}
+							{minLength ? <StringLengthRule message={`Tamanho mínimo é de ${minLength} caracteres`} min={minLength?.toString()} /> : null}
+						</>
+					) : (
+						""
+					)}
+				</Validator>
+			</TextBox>
+		</S.Container>
+	);
+};
+
+export default Input;

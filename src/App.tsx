@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CrmRoute from "./components/CrmRoute";
+import routes from "./config/routes";
+import GlobalStyles from "./styles/globals";
+import { ThemeProvider } from "styled-components";
+import LightTheme from "./styles/themes/LightTheme";
+import { TranslateProvider } from "./contexts/TranslateContext";
+import "devextreme/dist/css/dx.light.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: FC = () => {
+	return (
+		<TranslateProvider>
+			<ThemeProvider theme={LightTheme}>
+				<GlobalStyles />
+				<BrowserRouter>
+					<Routes>
+						{routes.map((route, index) => (
+							<Route path={route.path} key={index} element={<CrmRoute {...route} />} />
+						))}
+					</Routes>
+				</BrowserRouter>
+			</ThemeProvider>
+		</TranslateProvider>
+	);
+};
 
 export default App;
