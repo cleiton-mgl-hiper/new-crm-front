@@ -33,13 +33,13 @@ export const Main = styled.main`
 	overflow: auto;
 	padding: 2px 20px;
 	> * {
+		background-color: ${(props) => props.theme.palette.background.paper};
 		border-radius: ${(props) => props.theme.borderRadius.medium};
 		box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
 		margin-bottom: 20px;
 	}
 	> *:nth-child(1) {
 		min-height: calc(30% + 100px);
-		background-color: ${(props) => props.theme.palette.background.paper};
 	}
 `;
 
