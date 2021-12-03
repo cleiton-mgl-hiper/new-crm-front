@@ -15,8 +15,6 @@ const Sidebar: FC<IProps> = (props) => {
 		.map((x) => x.menuGroup || EnumMenuGroup.Outros)
 		.reduce((arr, curr) => (arr.indexOf(curr) === -1 ? [...arr, curr] : arr), [] as EnumMenuGroup[]);
 
-	console.log(menuGroups);
-
 	const { translate } = useTranslate();
 	const navigate = useNavigate();
 	const location = useLocation();
