@@ -3,13 +3,18 @@ import IProps from "./interfaces/IProps";
 import * as S from "./styles";
 import { CheckBox as DevCheck, Validator } from "devextreme-react";
 import { CustomRule } from "devextreme-react/data-grid";
+import { useTranslate } from "../../contexts/TranslateContext";
 
-const CheckBox: FC<IProps> = ({ errors, ...props }) => (
-	<S.Container>
-		<DevCheck {...props}>
-			<Validator>{errors?.length ? errors.map((err) => <CustomRule message={err} validationCallback={() => false} />) : null}</Validator>
-		</DevCheck>
-	</S.Container>
-);
+const CheckBox: FC<IProps> = ({ errors, label, ...props }) => {
+	const { translate } = useTranslate();
+
+	return (
+		<S.Container>
+			<DevCheck {...props} text={label ? translate(label) : ""}>
+				<Validator>{errors?.length ? errors.map((err) => <CustomRule message={err} validationCallback={() => false} />) : null}</Validator>
+			</DevCheck>
+		</S.Container>
+	);
+};
 
 export default CheckBox;

@@ -25,6 +25,8 @@ const LoginPage: FC<IProps> = (props) => {
 
 		const obj = { email, senha };
 		console.log(obj);
+
+		props.routeNavigate("/dashboard");
 	};
 
 	return (
@@ -57,7 +59,7 @@ const LoginPage: FC<IProps> = (props) => {
 												required
 												rounded="lg"
 												mode="email"
-												label={translate(EnumMsg.Usuario)}
+												label={EnumMsg.Usuario}
 												autoFocus
 												name="email"
 												value={email}
@@ -69,7 +71,7 @@ const LoginPage: FC<IProps> = (props) => {
 												required
 												rounded="lg"
 												mode="password"
-												label={translate(EnumMsg.Senha)}
+												label={EnumMsg.Senha}
 												name="senha"
 												value={senha}
 												onChange={(value) => setSenha(value || "")}
@@ -86,7 +88,7 @@ const LoginPage: FC<IProps> = (props) => {
 															&nbsp;
 														</Grid>
 														<Grid item>
-															<CheckBox text={translate(EnumMsg.LembrarDeMim)} />
+															<CheckBox label={EnumMsg.LembrarDeMim} />
 														</Grid>
 													</Grid>
 												</Grid>
@@ -107,7 +109,7 @@ const LoginPage: FC<IProps> = (props) => {
 										<Grid align="center">
 											<MdPolicy size="25px" color={theme.palette.black.main} />
 											&nbsp;
-											<Link to="/testecadastro">{translate(EnumMsg.TermosDeUsoPoliticaDePrivacidade)}</Link>
+											<Link to="/">{translate(EnumMsg.TermosDeUsoPoliticaDePrivacidade)}</Link>
 										</Grid>
 									</Grid>
 									<Grid item xs={12} sm={4}>

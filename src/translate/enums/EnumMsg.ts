@@ -25,6 +25,13 @@ enum EnumMsg {
 	URLInvalida,
 	Confirmar,
 	Dashboard,
+	Pesquisar,
+	Contatos,
+	Oportunidades,
+	Interacoes,
+	Grupos,
+	Subgrupos,
+	ProdutosServicos,
 }
 
 export default EnumMsg;

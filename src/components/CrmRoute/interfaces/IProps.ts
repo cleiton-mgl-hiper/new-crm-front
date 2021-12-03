@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { IconType } from "react-icons/lib";
+import EnumMenuGroup from "../../../config/enums/EnumMenuGroup";
 import IDefaultLayoutProps from "../../../config/interfaces/IDefaultLayoutProps";
 import IPageProps from "../../../pages/interfaces/IPageProps";
 import EnumMsg from "../../../translate/enums/EnumMsg";
@@ -12,4 +13,6 @@ export default interface IProps {
 	icon?: IconType;
 	isPrivate: boolean;
 	getProps?: () => Promise<object>;
+	displayOnMenu: boolean;
+	menuGroup?: EnumMenuGroup;
 }

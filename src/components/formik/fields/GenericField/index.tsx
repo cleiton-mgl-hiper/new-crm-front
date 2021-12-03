@@ -19,7 +19,7 @@ const GenericField: FC<IProps> = ({ type, config, name, label }) => {
 			return <TextField {...(config || {})} name={name} label={label} mode="tel" />;
 
 		case EnumFieldType.boolean:
-			return <CheckField {...(config || {})} name={name} text={label} />;
+			return <CheckField {...(config || {})} name={name} label={label} />;
 
 		default:
 			return <TextField {...(config || {})} name={name} label={label} />;

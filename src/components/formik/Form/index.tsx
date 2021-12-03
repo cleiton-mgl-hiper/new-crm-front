@@ -41,7 +41,7 @@ function MyForm<T>(props: IProps<T>) {
 					<Grid spacing={2} align="center">
 						{props.config?.map((c, i) => (
 							<Grid key={i} item {...(c.divSize || {})}>
-								<GenericField name={c.name} type={c.fieldType} config={c.editorConfig || {}} label={c.label ? translate(c.label) : ""} />
+								<GenericField name={c.name} type={c.fieldType} config={c.editorConfig || {}} label={c.label} />
 							</Grid>
 						))}
 						<Grid item xs={12}>

@@ -3,6 +3,7 @@ import IProps from "./interfaces/IProps";
 import * as S from "./styles";
 import { TextBox, Validator } from "devextreme-react";
 import { CompareRule, EmailRule, RequiredRule, StringLengthRule, CustomRule } from "devextreme-react/data-grid";
+import { useTranslate } from "../../contexts/TranslateContext";
 
 const Input: FC<IProps> = ({
 	name,
@@ -15,13 +16,15 @@ const Input: FC<IProps> = ({
 	minLength = 0,
 	maxLength,
 	autoFocus = false,
-	label = "",
+	label,
 	nativeValidations = true,
 	onBlur,
 	onChange,
 	value,
 }) => {
-	if (label[label.length - 1] !== ":") label = label.concat(":");
+	const { translate } = useTranslate();
+
+	const labelText = label ? translate(label).concat(":") : "";
 
 	return (
 		<S.Container rounded={rounded} errors={errors} required={required}>
@@ -29,7 +32,7 @@ const Input: FC<IProps> = ({
 				name={name}
 				mode={mode}
 				labelMode="floating"
-				label={required ? "*".concat(label || "") : label}
+				label={required ? "*".concat(labelText) : labelText}
 				stylingMode="filled"
 				showClearButton={showClearButton}
 				height="40px"

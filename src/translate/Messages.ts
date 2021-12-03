@@ -132,6 +132,41 @@ const Messages: { [k in EnumMsg]: IMessageValue } = {
 		es: "Dashboard",
 		ptBR: "Dashboard",
 	},
+	[EnumMsg.Pesquisar]: {
+		enUS: "Search",
+		es: "Buscar",
+		ptBR: "Pesquisar",
+	},
+	[EnumMsg.Contatos]: {
+		enUS: "Contacts",
+		es: "Contactos",
+		ptBR: "Contatos",
+	},
+	[EnumMsg.Oportunidades]: {
+		enUS: "Opportunities",
+		es: "Oportunidades",
+		ptBR: "Oportunidades",
+	},
+	[EnumMsg.Interacoes]: {
+		enUS: "Interactions",
+		es: "Interacciones",
+		ptBR: "Interações",
+	},
+	[EnumMsg.Grupos]: {
+		enUS: "Groups",
+		es: "Grupos",
+		ptBR: "Grupos",
+	},
+	[EnumMsg.Subgrupos]: {
+		enUS: "Subgroups",
+		es: "Subgrupos",
+		ptBR: "Subgrupos",
+	},
+	[EnumMsg.ProdutosServicos]: {
+		enUS: "Products and services",
+		es: "Productos y servicios",
+		ptBR: "Produtos e serviços",
+	},
 };
 
 export default Messages;

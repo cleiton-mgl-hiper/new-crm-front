@@ -17,6 +17,7 @@ export default createGlobalStyle`
 	a {
 		text-decoration: none;
 		color: ${(props) => props.theme.palette.text.primary} !important;
+		cursor: pointer;
 	}
 
 	#root {

@@ -35,8 +35,11 @@ export const Main = styled.main`
 	> * {
 		border-radius: ${(props) => props.theme.borderRadius.medium};
 		box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
-		min-height: calc(30% + 100px);
 		margin-bottom: 20px;
+	}
+	> *:nth-child(1) {
+		min-height: calc(30% + 100px);
+		background-color: ${(props) => props.theme.palette.background.paper};
 	}
 `;
 
