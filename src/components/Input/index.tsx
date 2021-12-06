@@ -42,7 +42,7 @@ const Input: FC<IProps> = ({
 						else e.component?.blur();
 					}, 0);
 				}}
-				valueChangeEvent="change"
+				valueChangeEvent="input"
 				maxLength={`${maxLength}`}
 				onFocusOut={(e) => onBlur && onBlur(e.event)}
 				onValueChanged={(e) => onChange && onChange(e.value, e.event)}

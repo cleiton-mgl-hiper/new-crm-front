@@ -4,7 +4,7 @@ import LoginPage from "../pages/Login";
 import DashboardPage from "../pages/Dashboard";
 import TesteCadastroPage from "../pages/TesteCadastro";
 import EnumMsg from "../translate/enums/EnumMsg";
-import { MdDashboard, MdPersonAdd, MdAccountBox, MdMonetizationOn, MdPermPhoneMsg, MdDesignServices, MdGroupWork, MdOutlineGroupWork } from "react-icons/md";
+import { MdDashboard, MdAccountBox, MdMonetizationOn, MdPermPhoneMsg, MdDesignServices, MdGroupWork, MdOutlineGroupWork } from "react-icons/md";
 import EnumMenuGroup from "./enums/EnumMenuGroup";
 
 const routes: ICrmRouteProps[] = [
@@ -18,7 +18,7 @@ const routes: ICrmRouteProps[] = [
 	},
 	//#endregion
 
-	//#region FAVORITOS
+	//#region RESUMOS
 	{
 		path: "/dashboard",
 		component: DashboardPage,
@@ -27,24 +27,14 @@ const routes: ICrmRouteProps[] = [
 		icon: MdDashboard,
 		isPrivate: true,
 		displayOnMenu: true,
-		menuGroup: EnumMenuGroup.Favoritos,
+		menuGroup: EnumMenuGroup.Resumos,
 	},
 	//#endregion
 
 	//#region COMERCIAL
 	{
-		path: "/testecadastro",
-		component: TesteCadastroPage,
-		layout: Layout,
-		name: EnumMsg.Cadastro,
-		icon: MdPersonAdd,
-		isPrivate: true,
-		displayOnMenu: true,
-		menuGroup: EnumMenuGroup.Comercial,
-	},
-	{
 		path: "/contatos",
-		component: DashboardPage,
+		component: TesteCadastroPage,
 		layout: Layout,
 		name: EnumMsg.Contatos,
 		icon: MdAccountBox,

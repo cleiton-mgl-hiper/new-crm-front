@@ -32,6 +32,9 @@ enum EnumMsg {
 	Grupos,
 	Subgrupos,
 	ProdutosServicos,
+	Favorito,
+	Ocultar,
+	Padrao,
 }
 
 export default EnumMsg;

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Button from "../../Button";
 
 export const Container = styled.div`
 	display: flex;
@@ -10,15 +9,6 @@ export const Container = styled.div`
 	> * {
 		margin: 0px 5px;
 	}
-`;
-
-export const IconButton = styled(Button).attrs({ color: "white" })`
-	padding: 4px 4px !important;
-	display: flex;
-	width: 35px;
-	height: 35px;
-	align-items: center;
-	justify-content: center;
 `;
 
 export const LangContainer = styled.div`

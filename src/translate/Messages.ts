@@ -167,6 +167,21 @@ const Messages: { [k in EnumMsg]: IMessageValue } = {
 		es: "Productos y servicios",
 		ptBR: "Produtos e serviços",
 	},
+	[EnumMsg.Favorito]: {
+		enUS: "Favorite",
+		es: "Favorito",
+		ptBR: "Favorito",
+	},
+	[EnumMsg.Ocultar]: {
+		enUS: "Hide",
+		es: "Esconder",
+		ptBR: "Ocultar",
+	},
+	[EnumMsg.Padrao]: {
+		enUS: "Default",
+		es: "Predeterminado",
+		ptBR: "Padrão",
+	},
 };
 
 export default Messages;

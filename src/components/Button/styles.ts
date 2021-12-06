@@ -18,13 +18,13 @@ export const Container = styled.button<IProps>`
 	color: ${(props) => {
 		switch (props.variant) {
 			case "contained":
-				return "#FFF";
+				return props.color !== "white" ? "#FFF" : props.theme.palette.text.secondary;
 
 			case "outlined":
-				return props.color === "white" ? "#FFF" : getColorTheme(props.color, props.theme).main;
+				return props.color === "white" ? props.theme.palette.text.secondary : getColorTheme(props.color, props.theme).main;
 
 			default:
-				return "#FFF";
+				return props.color !== "white" ? "#FFF" : props.theme.palette.text.secondary;
 		}
 	}};
 
@@ -34,7 +34,7 @@ export const Container = styled.button<IProps>`
 				return "0px";
 
 			case "outlined":
-				return `1px solid ${props.color === "white" ? "#FFF" : getColorTheme(props.color, props.theme).main}`;
+				return `1px solid ${props.color === "white" ? "#F5F5F5" : getColorTheme(props.color, props.theme).main}`;
 
 			default:
 				return "0px";
@@ -50,7 +50,7 @@ export const Container = styled.button<IProps>`
 		background-color: ${(props) => {
 			if (props.variant === "outlined") return "rgba(25, 118, 210, .04)";
 			else {
-				return props.color === "white" ? "#FFF" : getColorTheme(props.color, props.theme).dark;
+				return props.color === "white" ? "#F5F5F5" : getColorTheme(props.color, props.theme).dark;
 			}
 		}};
 	}

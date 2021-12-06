@@ -1,5 +1,5 @@
 enum EnumMenuGroup {
-	Favoritos = 1,
+	Resumos = 1,
 	Comercial = 2,
 	ProdutosServicos = 3,
 	Relacionamento = 4,
