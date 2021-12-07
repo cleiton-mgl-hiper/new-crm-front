@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import IProps from "./interfaces/IProps";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 
-const CrmRoute: FC<IProps> = ({ component: Component, layout: Layout = React.Fragment, name, icon, getProps, isPrivate }) => {
+const CrmRoute: FC<IProps> = ({ component: Component, layout: Layout, name, icon, getProps, isPrivate }) => {
 	const [defaultPageProps, setDefaultPageProps] = useState<object | null>({});
 	const [allowedAccess, setAllowedAccess] = useState<boolean>(false);
 
@@ -26,11 +26,12 @@ const CrmRoute: FC<IProps> = ({ component: Component, layout: Layout = React.Fra
 		} else setAllowedAccess(true);
 	}, [isPrivate]);
 
-	return (
-		<Layout name={name} icon={icon}>
-			{allowedAccess ? <Component {...defaultPageProps} routeLocation={location} routeNavigate={navigate} routeParams={params} /> : <div />}
-		</Layout>
-	);
+	const getChildren = useCallback(() => {
+		if (allowedAccess) return <Component {...defaultPageProps} routeLocation={location} routeNavigate={navigate} routeParams={params} />;
+		return <div />;
+	}, [allowedAccess, Component, defaultPageProps, location, params, navigate]);
+
+	return Layout ? <Layout name={name} icon={icon} children={getChildren()} /> : <>{getChildren()}</>;
 };
 
 export default CrmRoute;

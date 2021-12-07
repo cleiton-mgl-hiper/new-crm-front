@@ -10,8 +10,7 @@ export const Container = styled.nav<IStyledNavProps>`
 	background-color: ${(props) => props.theme.palette.background.paper};
 	box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.25);
 	overflow: hidden;
-	padding: 10px;
-	padding-top: 15px;
+	padding: 15px 0px 10px;
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: flex-start;
@@ -24,6 +23,7 @@ export const LogoContainer = styled(Grid).attrs({
 	align: "center",
 	justify: "center",
 })`
+	padding: 0px 10px;
 	margin-bottom: 15px;
 `;
 
@@ -49,6 +49,7 @@ export const EmpresaLink = styled.a`
 	color: ${(props) => props.theme.palette.text.secondary} !important;
 	font-size: 14px;
 	text-align: center;
+	padding: 0px 10px;
 	margin-bottom: 10px;
 	:hover {
 		text-decoration: underline;
@@ -61,9 +62,9 @@ export const SearchContainer = styled.div`
 	flex-flow: column nowrap;
 	justify-content: center;
 	align-items: stretch;
+	padding: 0px 10px;
 	margin: 0;
 	margin-bottom: 15px;
-	padding: 0;
 	transform: scaleY(0.85);
 `;
 
@@ -71,7 +72,7 @@ export const SearchField = styled(Input).attrs({ rounded: "lg", label: EnumMsg.P
 
 export const SearchIconContainer = styled.div`
 	position: absolute;
-	right: 0;
+	right: 10px;
 	top: 0;
 	height: 100%;
 	display: flex;
@@ -104,7 +105,7 @@ export const Divider = styled.li`
 `;
 
 export const FooterActionsContainer = styled.div`
-	padding-top: 5px;
+	padding: 5px 10px 0px;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-evenly;

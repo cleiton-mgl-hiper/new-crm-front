@@ -5,18 +5,17 @@ import { ReactComponent as USAIcon } from "../../assets/svg/usa.svg";
 import { ReactComponent as SpainIcon } from "../../assets/svg/spain.svg";
 import * as S from "./styles";
 import { useTranslate } from "../../contexts/TranslateContext";
-import EnumActionType from "../../contexts/TranslateContext/enums/EnumActionType";
 import LangType from "../../translate/types/LangType";
 
 const ChangeLanguage: FC<IProps> = ({ callback, order = ["ptBR", "enUS", "es"] }) => {
 	const {
-		dispatch,
 		state: { lang },
+		dispatch: translateDispatch,
 	} = useTranslate();
 
 	const handleChangeLang = (newLang: LangType): void => {
-		dispatch({
-			type: EnumActionType.SET_LANG,
+		translateDispatch({
+			type: "SET_LANG",
 			payload: newLang,
 		});
 		callback && callback();

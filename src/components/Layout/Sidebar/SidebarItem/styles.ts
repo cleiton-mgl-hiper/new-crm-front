@@ -2,13 +2,17 @@ import styled from "styled-components";
 import ISidebarItemStyledProps from "./interfaces/ISidebarItemStyledProps";
 
 export const SidebarItem = styled.li<ISidebarItemStyledProps>`
+	position: relative;
 	list-style: none;
 	cursor: pointer;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-start;
 	align-items: center;
-	padding: 5px 0 5px 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	padding-right: ${(props) => (props.sideBarPosition === "right" ? "15px" : "5px")};
 	border-radius: ${(props) => props.theme.borderRadius.medium};
 	transition: 0.2s;
 

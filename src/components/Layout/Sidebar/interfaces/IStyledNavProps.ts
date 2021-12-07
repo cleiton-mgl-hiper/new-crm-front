@@ -1,5 +1,5 @@
-import SidebarPositionType from "../types/SidebarPositionType";
+import MenuPositionType from "../../../../contexts/MenuContext/types/MenuPositionType";
 
 export default interface IStyledNavProps {
-	position: SidebarPositionType;
+	position: MenuPositionType;
 }

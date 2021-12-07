@@ -1,4 +1,4 @@
-import { FC, createContext, useReducer, useContext } from "react";
+import { FC, createContext, useReducer, useContext, useEffect, useMemo } from "react";
 import LangType from "../../translate/types/LangType";
 import IState from "./interfaces/IState";
 import IValue from "./interfaces/IValue";
@@ -10,12 +10,21 @@ const TranslateContext = createContext({} as IValue);
 
 const navigatorLang = window.navigator?.language;
 const defaultLang = (navigatorLang?.replace("-", "") || "ptBR") as LangType;
-const storageLang = localStorage.getItem("lang") as LangType;
-
-const initialState: IState = { lang: storageLang || defaultLang || "ptBR" };
+const initialState: IState = { lang: defaultLang || "ptBR" };
 
 export const TranslateProvider: FC = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+
+	const localStorageLangKey = useMemo(() => "lang", []);
+
+	useEffect(() => {
+		const storageLang = localStorage.getItem(localStorageLangKey) as LangType;
+		if (storageLang) dispatch({ type: "SET_LANG", payload: storageLang });
+	}, [localStorageLangKey]);
+
+	useEffect(() => {
+		localStorage.setItem(localStorageLangKey, state.lang);
+	}, [state.lang, localStorageLangKey]);
 
 	const translate = (key: EnumMsg): string => {
 		const { lang } = state;
