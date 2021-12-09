@@ -5,7 +5,7 @@ import reducer from "./reducer";
 
 const MenuContext = createContext({} as IValue);
 
-const initialState: IState = { favorites: [], hidden: [], position: "left" };
+const initialState: IState = { open: true, favorites: [], hidden: [], position: "left" };
 
 export const MenuProvider: FC = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState);

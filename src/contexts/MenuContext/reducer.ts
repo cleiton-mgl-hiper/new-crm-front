@@ -7,6 +7,10 @@ const reducer = (state: IState, action: DispatchType): IState => {
 			return { ...state, ...action.payload };
 		}
 
+		case "SET_MENU_OPEN": {
+			return { ...state, open: action.payload };
+		}
+
 		case "SET_MENU_POSITION": {
 			return { ...state, position: action.payload || "left" };
 		}
@@ -17,6 +21,10 @@ const reducer = (state: IState, action: DispatchType): IState => {
 
 		case "SET_MENU_HIDDEN": {
 			return { ...state, hidden: action.payload || [] };
+		}
+
+		case "CLEAR_MENU_CONFIG": {
+			return { open: true, favorites: [], hidden: [], position: "left" };
 		}
 
 		default:

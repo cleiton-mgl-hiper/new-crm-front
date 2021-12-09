@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import IStyledCurrentPageNameProps from "./interfaces/IStyledCurrentPageNameProps";
 
 export const Container = styled.div`
 	display: flex;
@@ -43,16 +44,12 @@ export const Main = styled.main`
 	}
 `;
 
-export const CurrentPageName = styled.div`
+export const CurrentPageName = styled.div<IStyledCurrentPageNameProps>`
 	padding: 0px 20px 5px 40px;
 	display: flex;
+	justify-content: ${(props) => (props.reverse ? "flex-end" : "flex-start")};
 	align-items: flex-end;
 	font-weight: 600;
-
-	@media (min-width: ${(props) => props.theme.breakpoints.md}) {
-		margin-top: -25px;
-		z-index: -1;
-	}
 
 	> .pageNameSpan {
 		margin-left: 10px;

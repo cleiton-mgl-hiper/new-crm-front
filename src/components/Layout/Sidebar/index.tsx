@@ -1,4 +1,4 @@
-import { FC, memo, ReactElement, useCallback, useEffect, useState } from "react";
+import { FC, memo, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import IProps from "./interfaces/IProps";
 import IMenuItem from "./interfaces/IMenuItem";
 import KeyItemActionType from "./SidebarItem/types/KeyItemActionType";
@@ -12,11 +12,19 @@ import SidebarItem from "./SidebarItem";
 import { useTranslate } from "../../../contexts/TranslateContext";
 import IconButton from "../../IconButton";
 import { useMenu } from "../../../contexts/MenuContext";
+import IMenuItemsList from "./interfaces/IMenuItemsList";
 
 const Sidebar: FC<IProps> = (props) => {
-	const { translate } = useTranslate();
+	//#region Context
 
-	const getDefaultItems: () => IMenuItem[] = useCallback(() => {
+	const { translate } = useTranslate();
+	const { state: menuState, dispatch: menuDispatch } = useMenu();
+
+	//#endregion
+
+	//#region Memo
+
+	const defaultItems: IMenuItem[] = useMemo(() => {
 		return routes
 			.filter((x) => x.displayOnMenu)
 			.map<IMenuItem>((x) => {
@@ -26,47 +34,34 @@ const Sidebar: FC<IProps> = (props) => {
 					icon: x.icon,
 					menuGroup: x.menuGroup,
 					flag: EnumFlagMenuItem.Padrao,
+					subItems: x.subRoutes,
 				};
 
 				return menuItem;
 			});
 	}, []);
 
-	const getDefaultGroups: () => EnumMenuGroup[] = useCallback(
+	const defaultGroups: EnumMenuGroup[] = useMemo(
 		() =>
-			getDefaultItems()
+			defaultItems
 				.map((x) => x.menuGroup || EnumMenuGroup.Outros)
-				.reduce((arr, curr) => (arr.indexOf(curr) === -1 ? [...arr, curr] : arr), [] as EnumMenuGroup[]),
-		[getDefaultItems]
+				.reduce<EnumMenuGroup[]>((arr, curr) => (arr.indexOf(curr) === -1 ? [...arr, curr] : arr), []),
+		[defaultItems]
 	);
+
+	//#endregion
+
+	//#region State
 
 	const [searchValue, setSearchValue] = useState("");
 	const [showingHiddenItems, setShowingHiddenItems] = useState<boolean>(false);
-	const { state: menuState, dispatch: menuDispatch } = useMenu();
-
 	const [haveHiddenItems, setHaveHiddenItems] = useState<boolean>(false);
 	const [haveFavoriteItems, setHaveFavoriteItems] = useState<boolean>(false);
+	const [items, setItems] = useState<IMenuItemsList>({ default: [], favorites: [], hidden: [] });
 
-	useEffect(() => {
-		setHaveFavoriteItems(menuState.favorites?.length > 0);
-	}, [menuState.favorites]);
+	//#endregion
 
-	useEffect(() => {
-		setHaveHiddenItems(menuState.hidden?.length > 0);
-	}, [menuState.hidden]);
-
-	useEffect(() => {
-		setShowingHiddenItems((value) => value && haveHiddenItems);
-	}, [haveHiddenItems]);
-
-	const handleSearchFilter = useCallback(
-		(item: IMenuItem) => {
-			if (!searchValue || !searchValue.trim()?.length) return true;
-
-			return translate(item.name).toLowerCase().indexOf(searchValue.trim().toLocaleLowerCase()) >= 0;
-		},
-		[searchValue, translate]
-	);
+	//#region Callback
 
 	const handleItemAction = useCallback(
 		(itemPath: string, actionType: KeyItemActionType) => {
@@ -92,32 +87,84 @@ const Sidebar: FC<IProps> = (props) => {
 		[menuState.favorites, menuState.hidden, menuDispatch]
 	);
 
-	const getFooterActions = useCallback(() => {
+	//#endregion
+
+	//#region Effect
+
+	useEffect(() => {
+		setHaveFavoriteItems(menuState.favorites?.length > 0);
+	}, [menuState.favorites]);
+
+	useEffect(() => {
+		setHaveHiddenItems(menuState.hidden?.length > 0);
+	}, [menuState.hidden]);
+
+	useEffect(() => {
+		const applySearchFilter = (item: IMenuItem) => {
+			if (!searchValue || !searchValue.trim()?.length) return true;
+
+			return translate(item.name).toLowerCase().indexOf(searchValue.trim().toLocaleLowerCase()) >= 0;
+		};
+
+		const getDefault = () => {
+			const retorno = defaultItems.filter((x) => menuState.hidden?.indexOf(x.path) === -1 && menuState.favorites?.indexOf(x.path) === -1);
+			return (retorno || []).filter((x) => applySearchFilter(x));
+		};
+
+		const getFavorites = () => {
+			let favorites = defaultItems.filter((x) => menuState.favorites?.indexOf(x.path) >= 0);
+			if (!favorites?.length) return [];
+			return favorites.map((x) => ({ ...x, flag: EnumFlagMenuItem.Favorito })).filter((x) => applySearchFilter(x));
+		};
+
+		const getHidden = () => {
+			let hidden = defaultItems.filter((x) => menuState.hidden?.indexOf(x.path) >= 0);
+			if (!hidden?.length) return [];
+			return hidden.map((x) => ({ ...x, flag: EnumFlagMenuItem.Oculto })).filter((x) => applySearchFilter(x));
+		};
+
+		setItems({
+			default: getDefault(),
+			favorites: getFavorites(),
+			hidden: getHidden(),
+		});
+	}, [defaultItems, menuState.favorites, menuState.hidden, searchValue, translate]);
+
+	useEffect(() => {
+		setShowingHiddenItems((value) => value && haveHiddenItems);
+	}, [haveHiddenItems]);
+
+	//#endregion
+
+	const getFooterActions = () => {
 		const actions: ReactElement[] = [];
 
-		if (menuState.favorites?.length || menuState.hidden?.length) {
-			actions.push(
-				<IconButton
-					key="footer_action_restore_config"
-					icon={MdSettingsBackupRestore}
-					color="white"
-					onClick={() => {
-						menuDispatch({ type: "SET_MENU_CONFIG", payload: { position: "left", hidden: [], favorites: [] } });
-					}}
-				/>
-			);
+		if (menuState.open) {
+			if (menuState.favorites?.length || menuState.hidden?.length) {
+				actions.push(
+					<IconButton
+						key="footer_action_restore_config"
+						icon={MdSettingsBackupRestore}
+						color="white"
+						onClick={() => {
+							menuDispatch({ type: "SET_MENU_CONFIG", payload: { open: true, favorites: [], hidden: [], position: menuState.position } });
+						}}
+					/>
+				);
+			}
+
+			if (haveHiddenItems) {
+				actions.push(
+					<IconButton
+						key="footer_action_show_hidden_items"
+						icon={showingHiddenItems ? MdVisibility : MdVisibilityOff}
+						color="white"
+						onClick={() => setShowingHiddenItems((value) => !value)}
+					/>
+				);
+			}
 		}
 
-		if (haveHiddenItems) {
-			actions.push(
-				<IconButton
-					key="footer_action_show_hidden_items"
-					icon={showingHiddenItems ? MdVisibility : MdVisibilityOff}
-					color="white"
-					onClick={() => setShowingHiddenItems((value) => !value)}
-				/>
-			);
-		}
 		actions.push(
 			<IconButton
 				key="footer_action_change_side_position"
@@ -132,30 +179,10 @@ const Sidebar: FC<IProps> = (props) => {
 
 		if (menuState.position === "left") return actions;
 		return actions.reverse();
-	}, [menuDispatch, menuState, showingHiddenItems, haveHiddenItems]);
-
-	const getFavorites = useCallback(() => {
-		const defaultItems = getDefaultItems();
-		let favorites = defaultItems.filter((x) => menuState.favorites?.indexOf(x.path) >= 0);
-		if (!favorites?.length) return [];
-		return favorites.map((x) => ({ ...x, flag: EnumFlagMenuItem.Favorito })).filter((x) => handleSearchFilter(x));
-	}, [menuState.favorites, getDefaultItems, handleSearchFilter]);
-
-	const getHidden = useCallback(() => {
-		const defaultItems = getDefaultItems();
-		let hidden = defaultItems.filter((x) => menuState.hidden?.indexOf(x.path) >= 0);
-		if (!hidden?.length) return [];
-		return hidden.map((x) => ({ ...x, flag: EnumFlagMenuItem.Oculto })).filter((x) => handleSearchFilter(x));
-	}, [menuState.hidden, getDefaultItems, handleSearchFilter]);
-
-	const getItems = useCallback(() => {
-		const defaultItems = getDefaultItems();
-		const retorno = defaultItems.filter((x) => menuState.hidden?.indexOf(x.path) === -1 && menuState.favorites?.indexOf(x.path) === -1);
-		return (retorno || []).filter((x) => handleSearchFilter(x));
-	}, [menuState.favorites, menuState.hidden, getDefaultItems, handleSearchFilter]);
+	};
 
 	return (
-		<S.Container position={menuState.position}>
+		<S.Container position={menuState.position} isOpen={menuState.open}>
 			<S.LogoContainer>
 				<Grid item>
 					<S.LogoIconContainer>
@@ -179,37 +206,39 @@ const Sidebar: FC<IProps> = (props) => {
 			<S.ItemsContainer>
 				{!showingHiddenItems &&
 					haveFavoriteItems &&
-					getFavorites().map(({ icon, name, path, flag }) => (
+					items.favorites.map(({ icon, name, path, flag, subItems }) => (
 						<SidebarItem
 							key={path}
 							path={path}
 							icon={icon}
 							text={name}
 							flag={flag}
+							subRoutes={subItems}
 							handleAction={handleItemAction}
 							sideBarPosition={menuState.position}
 						/>
 					))}
 
-				{!showingHiddenItems && haveFavoriteItems ? <S.Divider style={{ marginBottom: "25px" }} /> : ""}
+				{!showingHiddenItems && haveFavoriteItems ? <S.Divider /> : ""}
 
-				{getDefaultGroups().map((group, idx, arr) => {
-					let routesOfGroup = (showingHiddenItems ? getHidden() : getItems()).filter((x) => x.menuGroup === group);
+				{defaultGroups.map((group, idx, arr) => {
+					let routesOfGroup = (showingHiddenItems ? items.hidden : items.default).filter((x) => x.menuGroup === group);
 
 					if (routesOfGroup?.length) {
-						const items = routesOfGroup.map(({ icon, name, path, flag }) => (
+						const items = routesOfGroup.map(({ icon, name, path, flag, subItems }) => (
 							<SidebarItem
 								key={path}
 								path={path}
 								icon={icon}
 								text={name}
 								flag={flag}
+								subRoutes={subItems}
 								handleAction={handleItemAction}
 								sideBarPosition={menuState.position}
 							/>
 						));
 
-						if (idx < arr.length - 1) items.push(<S.Divider key={idx} />);
+						if (idx < arr.length - 1) items.push(<S.Divider key={`side_divider_${group}`} />);
 
 						return items;
 					}

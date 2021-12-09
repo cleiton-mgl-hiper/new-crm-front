@@ -49,7 +49,11 @@ const Input: FC<IProps> = ({
 				value={value}
 			>
 				<Validator>
-					{errors?.length ? errors.map((err, i) => <CustomRule key={i} message={err} validationCallback={() => false} />) : null}
+					{errors?.length
+						? errors
+								.reduce<string[]>((arr, curr) => (arr.indexOf(curr) >= 0 ? arr : [...arr, curr]), [])
+								.map((err) => <CustomRule key={err} message={err} validationCallback={() => false} />)
+						: null}
 
 					{nativeValidations ? (
 						<>

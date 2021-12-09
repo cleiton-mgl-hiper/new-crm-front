@@ -28,6 +28,11 @@ const routes: ICrmRouteProps[] = [
 		isPrivate: true,
 		displayOnMenu: true,
 		menuGroup: EnumMenuGroup.Resumos,
+		subRoutes: [
+			{ name: EnumMsg.Dashboard, component: DashboardPage, subPath: "dash1" },
+			{ name: EnumMsg.Dashboard, component: DashboardPage, subPath: "dash2" },
+			{ name: EnumMsg.Dashboard, component: DashboardPage, subPath: "dash3" },
+		],
 	},
 	//#endregion
 

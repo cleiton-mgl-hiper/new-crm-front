@@ -11,7 +11,13 @@ const CheckBox: FC<IProps> = ({ errors, label, ...props }) => {
 	return (
 		<S.Container>
 			<DevCheck {...props} text={label ? translate(label) : ""}>
-				<Validator>{errors?.length ? errors.map((err) => <CustomRule message={err} validationCallback={() => false} />) : null}</Validator>
+				<Validator>
+					{errors?.length
+						? errors
+								.reduce<string[]>((arr, curr) => (arr.indexOf(curr) >= 0 ? arr : [...arr, curr]), [])
+								.map((err) => <CustomRule key={err} message={err} validationCallback={() => false} />)
+						: null}
+				</Validator>
 			</DevCheck>
 		</S.Container>
 	);

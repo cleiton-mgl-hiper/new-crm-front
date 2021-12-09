@@ -1,7 +1,7 @@
 import { FC, useMemo, useState } from "react";
 import * as S from "./styles";
 import IProps from "./interfaces/IProps";
-import { MdNotifications, MdPersonOutline } from "react-icons/md";
+import { MdNotifications, MdPersonOutline, MdOutlineClose, MdMenu } from "react-icons/md";
 import { ReactComponent as BrazilIcon } from "../../../assets/svg/brazil.svg";
 import { ReactComponent as SpainIcon } from "../../../assets/svg/spain.svg";
 import { ReactComponent as USAIcon } from "../../../assets/svg/usa.svg";
@@ -9,6 +9,7 @@ import ChangeLanguage from "../../ChangeLanguage";
 import { useTranslate } from "../../../contexts/TranslateContext";
 import LangType from "../../../translate/types/LangType";
 import IconButton from "../../IconButton";
+import { useMenu } from "../../../contexts/MenuContext";
 
 const Navbar: FC<IProps> = (props) => {
 	const [changingLang, setChangingLang] = useState(false);
@@ -16,6 +17,11 @@ const Navbar: FC<IProps> = (props) => {
 	const {
 		state: { lang },
 	} = useTranslate();
+
+	const {
+		state: { open: menuIsOpen, position: menuPosition },
+		dispatch: menuDispatch,
+	} = useMenu();
 
 	const langs: LangType[] = useMemo(() => ["ptBR", "enUS", "es"], []);
 	const changeLangOrder: LangType[] = useMemo(
@@ -30,7 +36,9 @@ const Navbar: FC<IProps> = (props) => {
 	);
 
 	return (
-		<S.Container>
+		<S.Container reverse={menuPosition === "right"}>
+			<IconButton color="white" icon={menuIsOpen ? MdOutlineClose : MdMenu} onClick={() => menuDispatch({ type: "SET_MENU_OPEN", payload: !menuIsOpen })} />
+			<S.Separator />
 			{changingLang ? (
 				<ChangeLanguage callback={() => setChangingLang(false)} order={changeLangOrder} />
 			) : (

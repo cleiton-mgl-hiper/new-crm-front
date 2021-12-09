@@ -17,9 +17,39 @@ const App: FC = () => {
 					<GlobalStyles />
 					<BrowserRouter>
 						<Routes>
-							{routes.map((route, index) => (
-								<Route path={route.path} key={index} element={<CrmRoute {...route} />} />
-							))}
+							{routes.map((route) => {
+								const routeComponent = <Route path={route.path} key={route.path} element={<CrmRoute {...route} />} />;
+
+								if (!route.subRoutes?.length) return routeComponent;
+								else {
+									const itemRoutes = route.subRoutes.map((subRoute) => {
+										let path = route.path.concat(subRoute.subPath);
+										path = path.replaceAll("//", "/");
+
+										return (
+											<Route
+												path={path}
+												key={path}
+												element={
+													<CrmRoute
+														path={path}
+														component={subRoute.component}
+														displayOnMenu={route.displayOnMenu}
+														isPrivate={route.isPrivate}
+														name={subRoute.name}
+														icon={route.icon}
+														layout={route.layout}
+													/>
+												}
+											/>
+										);
+									});
+
+									if (route.path.replaceAll("/", "").length) itemRoutes.unshift(routeComponent);
+
+									return itemRoutes;
+								}
+							})}
 						</Routes>
 					</BrowserRouter>
 				</MenuProvider>

@@ -5,6 +5,12 @@ import IDefaultLayoutProps from "../../../config/interfaces/IDefaultLayoutProps"
 import IPageProps from "../../../pages/interfaces/IPageProps";
 import EnumMsg from "../../../translate/enums/EnumMsg";
 
+export interface ISubRouteProps {
+	subPath: string;
+	component: FC<IPageProps>;
+	name: EnumMsg;
+}
+
 export default interface IProps {
 	path: string;
 	component: FC<IPageProps>;
@@ -12,7 +18,7 @@ export default interface IProps {
 	name: EnumMsg;
 	icon?: IconType;
 	isPrivate: boolean;
-	getProps?: () => Promise<object>;
 	displayOnMenu: boolean;
 	menuGroup?: EnumMenuGroup;
+	subRoutes?: ISubRouteProps[];
 }

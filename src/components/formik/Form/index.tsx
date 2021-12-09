@@ -39,8 +39,8 @@ function MyForm<T>(props: IProps<T>) {
 			{({ isValid, isSubmitting }) => (
 				<Form>
 					<Grid spacing={2} align="center">
-						{props.config?.map((c, i) => (
-							<Grid key={i} item {...(c.divSize || {})}>
+						{props.config?.map((c) => (
+							<Grid key={c.name} item {...(c.divSize || {})}>
 								<GenericField name={c.name} type={c.fieldType} config={c.editorConfig || {}} label={c.label} />
 							</Grid>
 						))}

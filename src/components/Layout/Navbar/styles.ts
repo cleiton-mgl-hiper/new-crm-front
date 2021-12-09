@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import IStyledNavProps from "./interfaces/IStyledNavProps";
 
-export const Container = styled.div`
+export const Container = styled.div<IStyledNavProps>`
 	display: flex;
+	flex-direction: ${(props) => (props.reverse ? "row-reverse" : "row")};
 	justify-content: flex-end;
 	align-items: baseline;
 	padding: 10px 20px;
@@ -21,4 +23,8 @@ export const LangContainer = styled.div`
 	:hover {
 		opacity: 1;
 	}
+`;
+
+export const Separator = styled.div`
+	flex: 1;
 `;

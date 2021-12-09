@@ -1,5 +1,6 @@
 import MenuPositionType from "../../../../contexts/MenuContext/types/MenuPositionType";
 
-export default interface IStyledNavProps {
+export default interface IStyledSideProps {
 	position: MenuPositionType;
+	isOpen: boolean;
 }

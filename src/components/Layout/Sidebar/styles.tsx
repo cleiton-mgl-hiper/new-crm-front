@@ -2,9 +2,10 @@ import styled from "styled-components";
 import EnumMsg from "../../../translate/enums/EnumMsg";
 import Grid from "../../Grid";
 import Input from "../../Input";
-import IStyledNavProps from "./interfaces/IStyledNavProps";
+import IStyledSideProps from "./interfaces/IStyledSideProps";
+import { SidebarItemText } from "./SidebarItem/styles";
 
-export const Container = styled.nav<IStyledNavProps>`
+export const Container = styled.nav<IStyledSideProps>`
 	height: 100%;
 	width: 270px;
 	background-color: ${(props) => props.theme.palette.background.paper};
@@ -16,6 +17,20 @@ export const Container = styled.nav<IStyledNavProps>`
 	justify-content: flex-start;
 	align-items: stretch;
 	order: ${(props) => (props.position === "right" ? "2" : "0")};
+	transition: width 0.35s ease-in-out;
+
+	:not(:hover) {
+		${(props) =>
+			!props.isOpen
+				? `
+				width: 60px;
+				${LogoDesc} { display: none; }
+				${EmpresaLink} { opacity: 0; }
+				${SearchContainer} { opacity: 0; }
+				${SidebarItemText} { opacity: 0; }
+			`
+				: ""}
+	}
 `;
 
 export const LogoContainer = styled(Grid).attrs({
@@ -25,6 +40,7 @@ export const LogoContainer = styled(Grid).attrs({
 })`
 	padding: 0px 10px;
 	margin-bottom: 15px;
+	flex-wrap: nowrap;
 `;
 
 export const LogoIconContainer = styled.div`
@@ -43,6 +59,7 @@ export const LogoDesc = styled.h1`
 	color: ${(props) => props.theme.palette.text.primary} !important;
 	margin: 0;
 	padding: 0;
+	white-space: nowrap;
 `;
 
 export const EmpresaLink = styled.a`
@@ -51,6 +68,7 @@ export const EmpresaLink = styled.a`
 	text-align: center;
 	padding: 0px 10px;
 	margin-bottom: 10px;
+	white-space: nowrap;
 	:hover {
 		text-decoration: underline;
 	}
@@ -66,6 +84,7 @@ export const SearchContainer = styled.div`
 	margin: 0;
 	margin-bottom: 15px;
 	transform: scaleY(0.85);
+	transition: opacity 0.4s ease-in-out;
 `;
 
 export const SearchField = styled(Input).attrs({ rounded: "lg", label: EnumMsg.Pesquisar })``;
