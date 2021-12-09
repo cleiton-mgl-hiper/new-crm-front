@@ -2,12 +2,15 @@ import styled from "styled-components";
 import EnumMsg from "../../../translate/enums/EnumMsg";
 import Grid from "../../Grid";
 import Input from "../../Input";
+import IStyledFixBtnProps from "./interfaces/IStyledFixBtnProps";
 import IStyledSideProps from "./interfaces/IStyledSideProps";
-import { SidebarItem, SidebarItemText } from "./SidebarItem/styles";
+import { SidebarItem, SidebarItemText, SubItemsContainer } from "./SidebarItem/styles";
 
 export const Container = styled.nav<IStyledSideProps>`
+	position: fixed;
+	z-index: 5;
 	height: 100%;
-	width: 270px;
+	width: 230px;
 	background-color: ${(props) => props.theme.palette.background.paper};
 	box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.25);
 	overflow: hidden;
@@ -16,8 +19,17 @@ export const Container = styled.nav<IStyledSideProps>`
 	flex-flow: column nowrap;
 	justify-content: flex-start;
 	align-items: stretch;
-	order: ${(props) => (props.position === "right" ? "2" : "0")};
 	transition: width 0.35s ease-in-out;
+
+	${(props) => (props.position === "right" ? "right: 0px" : "")};
+
+	:hover {
+		${SidebarItem} {
+			::after {
+				display: block;
+			}
+		}
+	}
 
 	:not(:hover) {
 		${(props) =>
@@ -25,12 +37,12 @@ export const Container = styled.nav<IStyledSideProps>`
 				? `
 				width: 60px;
 				${LogoDesc} { display: none; }
+				${FixBtn} { display: none; }
 				${EmpresaLink} { opacity: 0; }
 				${SearchContainer} { opacity: 0; }
 				${SidebarItemText} { opacity: 0; }
-				${SidebarItem} {
-					::after { display: none; }
-				}
+				${SidebarItem} { ::after { display: none; } }
+				${SubItemsContainer} { max-height: 0px; height: unset; }
 			`
 				: ""}
 	}
@@ -42,8 +54,9 @@ export const LogoContainer = styled(Grid).attrs({
 	justify: "center",
 })`
 	padding: 0px 10px;
-	margin-bottom: 15px;
+	margin-bottom: 25px;
 	flex-wrap: nowrap;
+	position: relative;
 `;
 
 export const LogoIconContainer = styled.div`
@@ -57,12 +70,34 @@ export const LogoIconContainer = styled.div`
 `;
 
 export const LogoDesc = styled.h1`
-	font-size: 20px !important;
+	font-size: 18px !important;
 	font-weight: 600 !important;
 	color: ${(props) => props.theme.palette.text.primary} !important;
 	margin: 0;
 	padding: 0;
 	white-space: nowrap;
+`;
+
+export const FixBtn = styled.div<IStyledFixBtnProps>`
+	position: absolute;
+	height: 40px;
+	width: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: calc(50% - 20px);
+	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		display: none;
+	}
+
+	${(props) => (props.menuPosition === "right" ? "left: 0;" : "right: 0;")}
+	${(props) => (!props.fixed ? "transform: rotate(45deg);" : "")}
+
+	svg {
+		color: ${(props) => props.theme.palette.text.secondary};
+	}
 `;
 
 export const EmpresaLink = styled.a`

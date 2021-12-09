@@ -11,20 +11,20 @@ const Layout: FC<IProps> = ({ name, icon: Icon, children }) => {
 	const { translate } = useTranslate();
 	const theme = useTheme();
 	const {
-		state: { position: menuPosition },
+		state: { position: menuPosition, open: menuIsOpen },
 	} = useMenu();
 
 	return (
 		<S.Container>
+			<Navbar />
 			<Sidebar />
-			<S.RightContainer>
-				<Navbar />
+			<S.ContentContainer menuPosition={menuPosition} menuIsOpen={menuIsOpen}>
 				<S.CurrentPageName reverse={menuPosition === "right"}>
 					{Icon && <Icon color={theme.palette.black.main} size="20px" />}
 					<span className="pageNameSpan">{translate(name)}</span>
 				</S.CurrentPageName>
 				<S.Main>{children}</S.Main>
-			</S.RightContainer>
+			</S.ContentContainer>
 		</S.Container>
 	);
 };

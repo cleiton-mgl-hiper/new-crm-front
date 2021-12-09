@@ -4,7 +4,16 @@ import IMenuItem from "./interfaces/IMenuItem";
 import KeyItemActionType from "./SidebarItem/types/KeyItemActionType";
 import * as S from "./styles";
 import Grid from "../../Grid";
-import { MdOutlineArrowForward, MdOutlineArrowBack, MdComputer, MdSearch, MdSettingsBackupRestore, MdVisibilityOff, MdVisibility } from "react-icons/md";
+import {
+	MdOutlineArrowForward,
+	MdOutlineArrowBack,
+	MdComputer,
+	MdSearch,
+	MdSettingsBackupRestore,
+	MdVisibilityOff,
+	MdVisibility,
+	MdOutlinePushPin,
+} from "react-icons/md";
 import routes from "../../../config/routes";
 import EnumMenuGroup from "../../../config/enums/EnumMenuGroup";
 import EnumFlagMenuItem from "./enums/EnumFlagMenuItem";
@@ -13,10 +22,12 @@ import { useTranslate } from "../../../contexts/TranslateContext";
 import IconButton from "../../IconButton";
 import { useMenu } from "../../../contexts/MenuContext";
 import IMenuItemsList from "./interfaces/IMenuItemsList";
+import { useTheme } from "styled-components";
 
 const Sidebar: FC<IProps> = (props) => {
 	//#region Context
 
+	const theme = useTheme();
 	const { translate } = useTranslate();
 	const { state: menuState, dispatch: menuDispatch } = useMenu();
 
@@ -35,6 +46,7 @@ const Sidebar: FC<IProps> = (props) => {
 					menuGroup: x.menuGroup,
 					flag: EnumFlagMenuItem.Padrao,
 					subItems: x.subRoutes,
+					renderParentRoute: !!x.component,
 				};
 
 				return menuItem;
@@ -92,6 +104,18 @@ const Sidebar: FC<IProps> = (props) => {
 	//#region Effect
 
 	useEffect(() => {
+		document.addEventListener("click", function (e) {
+			if (menuState.open) {
+				const numverBreakWidth = parseInt(theme.breakpoints.md.replace("px", ""));
+				if (window.outerWidth <= numverBreakWidth) {
+					const targetEL = e.target as HTMLElement;
+					if (targetEL.id !== "sidebar-menu") menuDispatch({ type: "SET_MENU_OPEN", payload: false });
+				}
+			}
+		});
+	}, [theme, menuDispatch, menuState.open]);
+
+	useEffect(() => {
 		setHaveFavoriteItems(menuState.favorites?.length > 0);
 	}, [menuState.favorites]);
 
@@ -100,10 +124,18 @@ const Sidebar: FC<IProps> = (props) => {
 	}, [menuState.hidden]);
 
 	useEffect(() => {
-		const applySearchFilter = (item: IMenuItem) => {
+		const applySearchFilter = (item: IMenuItem): boolean => {
 			if (!searchValue || !searchValue.trim()?.length) return true;
 
-			return translate(item.name).toLowerCase().indexOf(searchValue.trim().toLocaleLowerCase()) >= 0;
+			const parentName = translate(item.name).toLowerCase();
+			const valueSearch = searchValue.trim().toLocaleLowerCase();
+
+			const parentContains = parentName.indexOf(valueSearch) >= 0;
+			if (parentContains) return true;
+
+			if (item.subItems?.length) {
+				return item.subItems.findIndex((si) => translate(si.name).toLowerCase().indexOf(valueSearch) >= 0) >= 0;
+			} else return false;
 		};
 
 		const getDefault = () => {
@@ -182,7 +214,7 @@ const Sidebar: FC<IProps> = (props) => {
 	};
 
 	return (
-		<S.Container position={menuState.position} isOpen={menuState.open}>
+		<S.Container id="sidebar-menu" position={menuState.position} isOpen={menuState.open}>
 			<S.LogoContainer>
 				<Grid item>
 					<S.LogoIconContainer>
@@ -192,6 +224,13 @@ const Sidebar: FC<IProps> = (props) => {
 				<Grid item>
 					<S.LogoDesc>FRG CRM</S.LogoDesc>
 				</Grid>
+				<S.FixBtn
+					fixed={menuState.open}
+					menuPosition={menuState.position}
+					onClick={() => menuDispatch({ type: "SET_MENU_OPEN", payload: !menuState.open })}
+				>
+					<MdOutlinePushPin size="20px" />
+				</S.FixBtn>
 			</S.LogoContainer>
 
 			<S.EmpresaLink>1254 - Fulltime homologação</S.EmpresaLink>
@@ -217,6 +256,7 @@ const Sidebar: FC<IProps> = (props) => {
 							handleAction={handleItemAction}
 							sideBarPosition={menuState.position}
 							sideBarCompactMode={!menuState.open}
+							searchValue={searchValue}
 						/>
 					))}
 
@@ -237,6 +277,7 @@ const Sidebar: FC<IProps> = (props) => {
 								handleAction={handleItemAction}
 								sideBarPosition={menuState.position}
 								sideBarCompactMode={!menuState.open}
+								searchValue={searchValue}
 							/>
 						));
 

@@ -35,6 +35,9 @@ enum EnumMsg {
 	Favorito,
 	Ocultar,
 	Padrao,
+	Configuracao,
+	ConfiguracaoNotificacao,
+	ConfiguracaoIntegracao,
 }
 
 export default EnumMsg;

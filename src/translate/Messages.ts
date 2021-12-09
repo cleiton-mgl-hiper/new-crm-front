@@ -182,6 +182,21 @@ const Messages: { [k in EnumMsg]: IMessageValue } = {
 		es: "Predeterminado",
 		ptBR: "Padrão",
 	},
+	[EnumMsg.Configuracao]: {
+		enUS: "Settings",
+		es: "Ajustes",
+		ptBR: "Configuração",
+	},
+	[EnumMsg.ConfiguracaoNotificacao]: {
+		enUS: "Notification settings",
+		es: "Configuración de notificación",
+		ptBR: "Configuração de notificação",
+	},
+	[EnumMsg.ConfiguracaoIntegracao]: {
+		enUS: "Integration settings",
+		es: "Configuración de integración",
+		ptBR: "Configuração de integração",
+	},
 };
 
 export default Messages;

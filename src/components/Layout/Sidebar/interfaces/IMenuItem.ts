@@ -11,4 +11,5 @@ export default interface IMenuItem {
 	menuGroup?: EnumMenuGroup;
 	flag: EnumFlagMenuItem;
 	subItems?: ISubRouteProps[];
+	renderParentRoute?: boolean;
 }

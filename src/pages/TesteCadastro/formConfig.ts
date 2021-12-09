@@ -9,7 +9,7 @@ export const configCadastro: IConfigField[] = [
 		name: "nome",
 		label: EnumMsg.Nome,
 		fieldType: EnumFieldType.text,
-		divSize: { xs: 12, lg: 6 },
+		divSize: { xs: 12, lg: 6, xl: 4 },
 		editorConfig: { required: true, minLength: 2, maxLength: 100, autoFocus: true } as InputProps,
 		validate: async (value: string) => {
 			if (validator.isEmpty(value, { ignore_whitespace: true })) return EnumMsg.NomeEhObrigatorio;
@@ -23,13 +23,13 @@ export const configCadastro: IConfigField[] = [
 		name: "sobrenome",
 		label: EnumMsg.Sobrenome,
 		fieldType: EnumFieldType.text,
-		divSize: { xs: 12, lg: 6 },
+		divSize: { xs: 12, lg: 6, xl: 4 },
 	},
 	{
 		name: "email",
 		label: EnumMsg.Email,
 		fieldType: EnumFieldType.email,
-		divSize: { xs: 12, lg: 6 },
+		divSize: { xs: 12, lg: 6, xl: 4 },
 		editorConfig: { required: true } as InputProps,
 		validate: async (value: string) => {
 			if (validator.isEmpty(value, { ignore_whitespace: true })) return EnumMsg.EmailEhObrigatorio;
@@ -40,7 +40,7 @@ export const configCadastro: IConfigField[] = [
 		name: "senha",
 		label: EnumMsg.Senha,
 		fieldType: EnumFieldType.password,
-		divSize: { xs: 12, lg: 6 },
+		divSize: { xs: 12, lg: 6, xl: 4 },
 		editorConfig: { required: true, minLength: 8 } as InputProps,
 		validate: async (value: string) => {
 			if (validator.isEmpty(value, { ignore_whitespace: true })) return EnumMsg.SenhaEhObrigatoria;
@@ -53,13 +53,13 @@ export const configCadastro: IConfigField[] = [
 		name: "telefone",
 		label: EnumMsg.Telefone,
 		fieldType: EnumFieldType.phone,
-		divSize: { xs: 12, lg: 6 },
+		divSize: { xs: 12, lg: 6, xl: 4 },
 	},
 	{
 		name: "site",
 		label: EnumMsg.Site,
 		fieldType: EnumFieldType.text,
-		divSize: { xs: 12, lg: 6 },
+		divSize: { xs: 12, lg: 6, xl: 4 },
 		validate: async (value: string) => {
 			if (!validator.isEmpty(value, { ignore_whitespace: true })) {
 				if (!validator.isURL(value || "")) return EnumMsg.URLInvalida;

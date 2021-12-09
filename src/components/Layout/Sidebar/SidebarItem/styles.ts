@@ -24,13 +24,11 @@ export const SidebarItem = styled.div<ISidebarItemStyledProps>`
 	border-radius: ${(props) => (props.isSubItem ? "0px" : props.theme.borderRadius.medium)};
 	transition: 0.2s;
 
-	${(props) => (props.isSubItem ? `background-color: #f5f5f5;` : "")}
-
 	:hover {
-		background-color: ${(props) => (props.isSubItem ? `#e9e9e9` : "#f5f5f5")};
+		background-color: #f5f5f5;
 	}
 	:active {
-		background-color: ${(props) => (props.isSubItem ? `transparent` : "#e9e9e9")};
+		background-color: #e9e9e9;
 	}
 
 	::before {
@@ -44,21 +42,26 @@ export const SidebarItem = styled.div<ISidebarItemStyledProps>`
 		${(props) => (props.sideBarPosition === "left" ? "left: -7.5px" : "right: -7.5px")}
 	}
 
-	::after {
-		content: "";
-		display: ${(props) => (props.containsSubItem ? "block" : "none")};
-		position: absolute;
-		right: 15px;
-		top: calc(50% - 3.75px);
-		height: 7.5px;
-		width: 7.5px;
-		padding: 0px;
-		margin: 0px;
-		border-top: 2px solid ${(props) => props.theme.palette.text.secondary};
-		border-right: 2px solid ${(props) => props.theme.palette.text.secondary};
-		transform: ${(props) => (props.showingSubItems ? "rotate(135deg)" : "rotate(45deg)")};
-		transition: transform 0.3s;
-	}
+	${(props) =>
+		props.containsSubItem
+			? `
+				::after {
+					content: "";
+					display: ${!props.sideBarCompactMode ? "block" : "none"};
+					position: absolute;
+					right: 15px;
+					top: calc(50% - 3.75px);
+					height: 7.5px;
+					width: 7.5px;
+					padding: 0px;
+					margin: 0px;
+					border-top: 2px solid ${props.theme.palette.text.secondary};
+					border-right: 2px solid ${props.theme.palette.text.secondary};
+					transform: ${props.showingSubItems ? "rotate(135deg)" : "rotate(45deg)"};
+					transition: transform 0.3s;
+				}
+			`
+			: ""}
 
 	.icon-container {
 		${(props) =>

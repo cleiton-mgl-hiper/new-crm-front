@@ -1,4 +1,4 @@
-import { FC, memo, useMemo, useState } from "react";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 import ISidebarItemProps from "./interfaces/ISidebarItemProps";
 import * as S from "./styles";
 import { ContextMenu } from "devextreme-react";
@@ -8,7 +8,18 @@ import IItemActionMenuDataSource from "./interfaces/IItemActionMenuDataSource";
 import EnumMsg from "../../../../translate/enums/EnumMsg";
 import EnumFlagMenuItem from "../enums/EnumFlagMenuItem";
 
-const SidebarItem: FC<ISidebarItemProps> = ({ path, text, icon: Icon, flag, handleAction, sideBarPosition, sideBarCompactMode, subRoutes }) => {
+const SidebarItem: FC<ISidebarItemProps> = ({
+	path,
+	text,
+	icon: Icon,
+	flag,
+	handleAction,
+	sideBarPosition,
+	sideBarCompactMode,
+	subRoutes,
+	renderParentRoute,
+	searchValue,
+}) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { translate } = useTranslate();
@@ -26,11 +37,31 @@ const SidebarItem: FC<ISidebarItemProps> = ({ path, text, icon: Icon, flag, hand
 	const itemId = useMemo(() => `nav_item__${path.replaceAll("/", "")}`, [path]);
 
 	const handleItemClick = (subPath?: string) => {
-		if (path && path.replaceAll("/", "")?.length) navigate(path);
-		if (subRoutes?.length) {
-			setShowingSubItems((value) => !value);
+		if (subRoutes?.length) setShowingSubItems((value) => !value);
+
+		if (subPath?.length) {
+			navigate(path.concat("/").concat(subPath).replaceAll("//", "/"));
+		} else {
+			if (subRoutes?.length) {
+				if (!renderParentRoute) return;
+			}
+
+			if (path && path.replaceAll("/", "")?.length) {
+				navigate(path);
+			}
 		}
 	};
+
+	useEffect(() => {
+		if (sideBarCompactMode) setShowingSubItems(false);
+	}, [sideBarCompactMode]);
+
+	useEffect(() => {
+		if (subRoutes?.length && searchValue && searchValue.trim()?.length) {
+			const valueSearch = searchValue.trim().toLocaleLowerCase();
+			setShowingSubItems((value) => value || subRoutes.findIndex((sr) => translate(sr.name).toLowerCase().indexOf(valueSearch) >= 0) >= 0);
+		} else setShowingSubItems(false);
+	}, [searchValue, subRoutes, translate]);
 
 	return (
 		<S.Container>
@@ -55,14 +86,20 @@ const SidebarItem: FC<ISidebarItemProps> = ({ path, text, icon: Icon, flag, hand
 
 			{subRoutes?.length ? (
 				<S.SubItemsContainer show={showingSubItems}>
-					{subRoutes.map(({ name, subPath }) => {
-						const subItemId = itemId.concat(`__${subPath.replaceAll("/", "")}`);
-						return (
-							<S.SidebarItem key={subItemId} id={subItemId} onClick={() => handleItemClick(subPath)} isSubItem sideBarPosition={sideBarPosition}>
-								<S.SidebarItemText>{translate(name)}</S.SidebarItemText>
-							</S.SidebarItem>
-						);
-					})}
+					{subRoutes
+						.filter((sr) => {
+							if (!searchValue?.length) return true;
+							const valueSearch = searchValue.trim().toLocaleLowerCase();
+							return translate(sr.name).toLowerCase().indexOf(valueSearch) >= 0;
+						})
+						.map(({ name, subPath }) => {
+							const subItemId = itemId.concat(`__${subPath.replaceAll("/", "")}`);
+							return (
+								<S.SidebarItem key={subItemId} id={subItemId} onClick={() => handleItemClick(subPath)} isSubItem sideBarPosition={sideBarPosition}>
+									<S.SidebarItemText>{translate(name)}</S.SidebarItemText>
+								</S.SidebarItem>
+							);
+						})}
 				</S.SubItemsContainer>
 			) : null}
 

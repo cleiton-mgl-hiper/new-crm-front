@@ -16,7 +16,7 @@ const CrmRoute: FC<IProps> = ({ component: Component, layout: Layout, name, icon
 	}, [isPrivate]);
 
 	const getChildren = useCallback(() => {
-		if (allowedAccess) return <Component routeLocation={location} routeNavigate={navigate} routeParams={params} />;
+		if (allowedAccess) return Component ? <Component routeLocation={location} routeNavigate={navigate} routeParams={params} /> : <div />;
 		return <div />;
 	}, [allowedAccess, Component, location, params, navigate]);
 

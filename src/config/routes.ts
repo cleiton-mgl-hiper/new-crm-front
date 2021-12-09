@@ -4,7 +4,7 @@ import LoginPage from "../pages/Login";
 import DashboardPage from "../pages/Dashboard";
 import TesteCadastroPage from "../pages/TesteCadastro";
 import EnumMsg from "../translate/enums/EnumMsg";
-import { MdDashboard, MdAccountBox, MdMonetizationOn, MdPermPhoneMsg, MdDesignServices, MdGroupWork, MdOutlineGroupWork } from "react-icons/md";
+import { MdDashboard, MdAccountBox, MdMonetizationOn, MdPermPhoneMsg, MdDesignServices, MdGroupWork, MdOutlineGroupWork, MdSettings } from "react-icons/md";
 import EnumMenuGroup from "./enums/EnumMenuGroup";
 
 const routes: ICrmRouteProps[] = [
@@ -28,11 +28,6 @@ const routes: ICrmRouteProps[] = [
 		isPrivate: true,
 		displayOnMenu: true,
 		menuGroup: EnumMenuGroup.Resumos,
-		subRoutes: [
-			{ name: EnumMsg.Dashboard, component: DashboardPage, subPath: "dash1" },
-			{ name: EnumMsg.Dashboard, component: DashboardPage, subPath: "dash2" },
-			{ name: EnumMsg.Dashboard, component: DashboardPage, subPath: "dash3" },
-		],
 	},
 	//#endregion
 
@@ -100,6 +95,24 @@ const routes: ICrmRouteProps[] = [
 		displayOnMenu: true,
 		menuGroup: EnumMenuGroup.ProdutosServicos,
 	},
+	//#endregion
+
+	//#region CONFIGURAÇÕES
+
+	{
+		path: "/configuracao",
+		layout: Layout,
+		name: EnumMsg.Configuracao,
+		icon: MdSettings,
+		isPrivate: true,
+		displayOnMenu: true,
+		menuGroup: EnumMenuGroup.Configuracoes,
+		subRoutes: [
+			{ name: EnumMsg.ConfiguracaoNotificacao, subPath: "notificacao", component: DashboardPage },
+			{ name: EnumMsg.ConfiguracaoIntegracao, subPath: "integracao", component: DashboardPage },
+		],
+	},
+
 	//#endregion
 ];
 

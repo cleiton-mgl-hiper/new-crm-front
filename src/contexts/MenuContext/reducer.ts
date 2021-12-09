@@ -16,11 +16,13 @@ const reducer = (state: IState, action: DispatchType): IState => {
 		}
 
 		case "SET_MENU_FAVORITES": {
-			return { ...state, favorites: action.payload || [] };
+			const fav = action.payload || [];
+			return { ...state, favorites: fav, hidden: state.hidden?.filter((x) => fav.indexOf(x) === -1) || [] };
 		}
 
 		case "SET_MENU_HIDDEN": {
-			return { ...state, hidden: action.payload || [] };
+			const hidden = action.payload || [];
+			return { ...state, hidden: hidden, favorites: state.favorites?.filter((x) => hidden.indexOf(x) === -1) || [] };
 		}
 
 		case "CLEAR_MENU_CONFIG": {

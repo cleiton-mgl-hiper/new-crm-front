@@ -13,7 +13,7 @@ export interface ISubRouteProps {
 
 export default interface IProps {
 	path: string;
-	component: FC<IPageProps>;
+	component?: FC<IPageProps>;
 	layout?: FC<IDefaultLayoutProps>;
 	name: EnumMsg;
 	icon?: IconType;

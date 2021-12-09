@@ -11,8 +11,10 @@ export default interface ISidebarItemProps extends HTMLProps<HTMLDivElement> {
 	text: EnumMsg;
 	icon?: IconType;
 	subRoutes?: ISubRouteProps[];
+	renderParentRoute?: boolean;
 	flag: EnumFlagMenuItem;
 	handleAction: (itemPath: string, actionType: KeyItemActionType) => void;
 	sideBarPosition: MenuPositionType;
 	sideBarCompactMode: boolean;
+	searchValue: string;
 }

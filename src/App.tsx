@@ -23,7 +23,7 @@ const App: FC = () => {
 								if (!route.subRoutes?.length) return routeComponent;
 								else {
 									const itemRoutes = route.subRoutes.map((subRoute) => {
-										let path = route.path.concat(subRoute.subPath);
+										let path = route.path.concat("/").concat(subRoute.subPath);
 										path = path.replaceAll("//", "/");
 
 										return (
