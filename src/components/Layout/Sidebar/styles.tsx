@@ -3,7 +3,7 @@ import EnumMsg from "../../../translate/enums/EnumMsg";
 import Grid from "../../Grid";
 import Input from "../../Input";
 import IStyledSideProps from "./interfaces/IStyledSideProps";
-import { SidebarItemText } from "./SidebarItem/styles";
+import { SidebarItem, SidebarItemText } from "./SidebarItem/styles";
 
 export const Container = styled.nav<IStyledSideProps>`
 	height: 100%;
@@ -28,6 +28,9 @@ export const Container = styled.nav<IStyledSideProps>`
 				${EmpresaLink} { opacity: 0; }
 				${SearchContainer} { opacity: 0; }
 				${SidebarItemText} { opacity: 0; }
+				${SidebarItem} {
+					::after { display: none; }
+				}
 			`
 				: ""}
 	}

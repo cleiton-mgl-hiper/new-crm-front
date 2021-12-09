@@ -46,12 +46,12 @@ export const SidebarItem = styled.div<ISidebarItemStyledProps>`
 
 	::after {
 		content: "";
-		display: ${(props) => (props.containsSubItem && !props.sideBarCompactMode ? "block" : "none")};
+		display: ${(props) => (props.containsSubItem ? "block" : "none")};
 		position: absolute;
 		right: 15px;
 		top: calc(50% - 3.75px);
-		height: 8px;
-		width: 8px;
+		height: 7.5px;
+		width: 7.5px;
 		padding: 0px;
 		margin: 0px;
 		border-top: 2px solid ${(props) => props.theme.palette.text.secondary};
