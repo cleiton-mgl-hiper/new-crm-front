@@ -62,7 +62,10 @@ export const CurrentPageName = styled.div<IStyledCurrentPageNameProps>`
 	justify-content: ${(props) => (props.reverse ? "flex-end" : "flex-start")};
 	align-items: flex-end;
 	font-weight: 600;
-	margin-top: -30px;
+
+	@media (min-width: ${(props) => props.theme.breakpoints.md}) {
+		margin-top: -30px;
+	}
 
 	> .pageNameSpan {
 		margin-left: 10px;
