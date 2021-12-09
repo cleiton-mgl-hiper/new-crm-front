@@ -216,6 +216,7 @@ const Sidebar: FC<IProps> = (props) => {
 							subRoutes={subItems}
 							handleAction={handleItemAction}
 							sideBarPosition={menuState.position}
+							sideBarCompactMode={!menuState.open}
 						/>
 					))}
 
@@ -235,6 +236,7 @@ const Sidebar: FC<IProps> = (props) => {
 								subRoutes={subItems}
 								handleAction={handleItemAction}
 								sideBarPosition={menuState.position}
+								sideBarCompactMode={!menuState.open}
 							/>
 						));
 

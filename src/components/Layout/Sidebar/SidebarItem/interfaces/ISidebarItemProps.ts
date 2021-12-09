@@ -14,4 +14,5 @@ export default interface ISidebarItemProps extends HTMLProps<HTMLDivElement> {
 	flag: EnumFlagMenuItem;
 	handleAction: (itemPath: string, actionType: KeyItemActionType) => void;
 	sideBarPosition: MenuPositionType;
+	sideBarCompactMode: boolean;
 }

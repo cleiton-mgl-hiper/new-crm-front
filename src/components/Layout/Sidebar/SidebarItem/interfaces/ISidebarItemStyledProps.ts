@@ -5,5 +5,6 @@ export default interface ISidebarItemStyledProps {
 	isSubItem?: boolean;
 	containsSubItem?: boolean;
 	showingSubItems?: boolean;
+	sideBarCompactMode?: boolean;
 	sideBarPosition: MenuPositionType;
 }

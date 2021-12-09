@@ -8,7 +8,7 @@ import IItemActionMenuDataSource from "./interfaces/IItemActionMenuDataSource";
 import EnumMsg from "../../../../translate/enums/EnumMsg";
 import EnumFlagMenuItem from "../enums/EnumFlagMenuItem";
 
-const SidebarItem: FC<ISidebarItemProps> = ({ path, text, icon: Icon, flag, handleAction, sideBarPosition, subRoutes }) => {
+const SidebarItem: FC<ISidebarItemProps> = ({ path, text, icon: Icon, flag, handleAction, sideBarPosition, sideBarCompactMode, subRoutes }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { translate } = useTranslate();
@@ -25,9 +25,11 @@ const SidebarItem: FC<ISidebarItemProps> = ({ path, text, icon: Icon, flag, hand
 
 	const itemId = useMemo(() => `nav_item__${path.replaceAll("/", "")}`, [path]);
 
-	const handleItemClick = () => {
+	const handleItemClick = (subPath?: string) => {
 		if (path && path.replaceAll("/", "")?.length) navigate(path);
-		if (subRoutes?.length) setShowingSubItems((value) => !value);
+		if (subRoutes?.length) {
+			setShowingSubItems((value) => !value);
+		}
 	};
 
 	return (
@@ -39,6 +41,7 @@ const SidebarItem: FC<ISidebarItemProps> = ({ path, text, icon: Icon, flag, hand
 				containsSubItem={!!subRoutes?.length}
 				showingSubItems={showingSubItems}
 				sideBarPosition={sideBarPosition}
+				sideBarCompactMode={sideBarCompactMode}
 			>
 				{Icon ? (
 					<S.SidebarItemIconContainer>
@@ -55,7 +58,7 @@ const SidebarItem: FC<ISidebarItemProps> = ({ path, text, icon: Icon, flag, hand
 					{subRoutes.map(({ name, subPath }) => {
 						const subItemId = itemId.concat(`__${subPath.replaceAll("/", "")}`);
 						return (
-							<S.SidebarItem key={subItemId} id={subItemId} onClick={() => handleItemClick()} isSubItem sideBarPosition={sideBarPosition}>
+							<S.SidebarItem key={subItemId} id={subItemId} onClick={() => handleItemClick(subPath)} isSubItem sideBarPosition={sideBarPosition}>
 								<S.SidebarItemText>{translate(name)}</S.SidebarItemText>
 							</S.SidebarItem>
 						);
