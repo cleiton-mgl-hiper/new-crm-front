@@ -50,8 +50,8 @@ export const SidebarItem = styled.div<ISidebarItemStyledProps>`
 		position: absolute;
 		right: 15px;
 		top: calc(50% - 3.75px);
-		height: 7.5px;
-		width: 7.5px;
+		height: 8px;
+		width: 8px;
 		padding: 0px;
 		margin: 0px;
 		border-top: 2px solid ${(props) => props.theme.palette.text.secondary};
