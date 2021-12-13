@@ -1,9 +1,9 @@
-import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import IProps from "./interfaces/IProps";
 import IMenuItem from "./interfaces/IMenuItem";
 import KeyItemActionType from "./SidebarItem/types/KeyItemActionType";
 import * as S from "./styles";
-import { MdSearch, MdSettingsBackupRestore, MdVisibilityOff, MdVisibility, MdOutlinePushPin, MdOpenWith } from "react-icons/md";
+import { MdSearch, MdSettingsBackupRestore, MdVisibilityOff, MdVisibility, MdOutlinePushPin, MdOpenWith, MdBusinessCenter, MdMoreVert } from "react-icons/md";
 import routes from "../../../config/routes";
 import EnumMenuGroup from "../../../config/enums/EnumMenuGroup";
 import EnumFlagMenuItem from "./enums/EnumFlagMenuItem";
@@ -14,9 +14,10 @@ import { useMenu } from "../../../contexts/MenuContext";
 import IMenuItemsList from "./interfaces/IMenuItemsList";
 import { useTheme } from "styled-components";
 import Logo from "../../Logo";
-import { ContextMenu } from "devextreme-react";
+import { ContextMenu, Popover } from "devextreme-react";
 import IOptionChangePosition from "./interfaces/IOptionChangePosition";
 import EnumMsg from "../../../translate/enums/EnumMsg";
+import Grid from "../../Grid";
 
 const Sidebar: FC<IProps> = (props) => {
 	//#region Context
@@ -75,6 +76,7 @@ const Sidebar: FC<IProps> = (props) => {
 	const [haveFavoriteItems, setHaveFavoriteItems] = useState<boolean>(false);
 	const [items, setItems] = useState<IMenuItemsList>({ default: [], favorites: [], hidden: [] });
 	const [positionOptionsVisible, setPositionOptionsVisible] = useState<boolean>(false);
+	const [moreConfigVisible, setMoreConfigVisible] = useState<boolean>(false);
 
 	//#endregion
 
@@ -173,6 +175,35 @@ const Sidebar: FC<IProps> = (props) => {
 
 	//#endregion
 
+	const getBtnsConfigActions = (): ReactNode => (
+		<>
+			<S.ConfigActionButton
+				icon={MdSettingsBackupRestore}
+				onClick={() => {
+					menuDispatch({ type: "SET_MENU_CONFIG", payload: { open: true, favorites: [], hidden: [], position: menuState.position } });
+					setMoreConfigVisible(false);
+				}}
+				disabled={!menuState.favorites?.length && !menuState.hidden?.length}
+			/>
+			<S.ConfigActionButton
+				icon={showingHiddenItems ? MdVisibility : MdVisibilityOff}
+				onClick={() => {
+					setShowingHiddenItems((value) => !value);
+					setMoreConfigVisible(false);
+				}}
+				disabled={!haveHiddenItems}
+			/>
+			<S.ConfigActionButton
+				id="sideBtnChangePosition"
+				icon={MdOpenWith}
+				onClick={() => {
+					menuDispatch({ type: "SET_MENU_OPEN", payload: true });
+					setPositionOptionsVisible(true);
+				}}
+			/>
+		</>
+	);
+
 	return (
 		<S.Container id="sidebar-menu" position={menuState.position} isOpen={menuState.open}>
 			{(menuState.position === "left" || menuState.position === "right") && (
@@ -189,6 +220,8 @@ const Sidebar: FC<IProps> = (props) => {
 					<S.EmpresaLink>1254 - Fulltime homologação</S.EmpresaLink>
 				</>
 			)}
+
+			{menuState.position === "top" && <IconButton icon={MdBusinessCenter} color="primary" variant="outlined" onClick={() => null} />}
 
 			<S.SearchContainer>
 				<S.SearchField value={searchValue} onChange={(value) => setSearchValue(value)} />
@@ -245,31 +278,22 @@ const Sidebar: FC<IProps> = (props) => {
 				})}
 			</S.ItemsContainer>
 
-			<S.FooterActionsContainer>
-				<IconButton
-					icon={MdSettingsBackupRestore}
-					color="white"
-					onClick={() => {
-						menuDispatch({ type: "SET_MENU_CONFIG", payload: { open: true, favorites: [], hidden: [], position: menuState.position } });
-					}}
-					disabled={!menuState.favorites?.length && !menuState.hidden?.length}
-				/>
-				<IconButton
-					icon={showingHiddenItems ? MdVisibility : MdVisibilityOff}
-					color="white"
-					onClick={() => setShowingHiddenItems((value) => !value)}
-					disabled={!haveHiddenItems}
-				/>
-				<IconButton
-					id="sideBtnChangePosition"
-					icon={MdOpenWith}
-					color="white"
-					onClick={() => {
-						menuDispatch({ type: "SET_MENU_OPEN", payload: true });
-						setPositionOptionsVisible(true);
-					}}
-				/>
-			</S.FooterActionsContainer>
+			<S.FooterActionsContainer>{getBtnsConfigActions()}</S.FooterActionsContainer>
+			{menuState.position === "top" && (
+				<>
+					<IconButton
+						id="sideBtnMoreConfig"
+						icon={MdMoreVert}
+						color="primary"
+						variant="outlined"
+						onClick={() => setMoreConfigVisible((value) => !value)}
+					/>
+					<Popover target="#sideBtnMoreConfig" visible={moreConfigVisible} closeOnOutsideClick onHiding={() => setMoreConfigVisible(false)}>
+						<Grid justify="space-evenly">{getBtnsConfigActions()}</Grid>
+					</Popover>
+				</>
+			)}
+
 			<ContextMenu
 				target="#sideBtnChangePosition"
 				visible={positionOptionsVisible}
@@ -279,6 +303,7 @@ const Sidebar: FC<IProps> = (props) => {
 				onItemClick={({ itemData }) => {
 					let position = (itemData as IOptionChangePosition).value;
 					setPositionOptionsVisible(false);
+					setMoreConfigVisible(false);
 					menuDispatch({ type: "SET_MENU_POSITION", payload: position });
 				}}
 			/>

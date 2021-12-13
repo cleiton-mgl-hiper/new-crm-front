@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import EnumMsg from "../../../translate/enums/EnumMsg";
+import IconButton from "../../IconButton";
 import Input from "../../Input";
 import { LogoDesc } from "../../Logo/styles";
 import IStyledFixBtnProps from "./interfaces/IStyledFixBtnProps";
@@ -85,6 +86,17 @@ export const FooterActionsContainer = styled.div`
 	align-items: center;
 	overflow: hidden;
 	transition: width 1.5s ease-in-out;
+	padding: 5px 10px 5px;
+	> *:last-child {
+		margin-right: 0px;
+	}
+	> *:first-child {
+		margin-left: 0px;
+	}
+`;
+
+export const ConfigActionButton = styled(IconButton).attrs({ color: "white" })`
+	margin: 0 5px;
 `;
 
 const LeftOrRightContainerStyle = css<IStyledSideProps>`
@@ -152,10 +164,6 @@ const LeftOrRightContainerStyle = css<IStyledSideProps>`
 		transform: rotate(180deg);
 		margin: 7.5px 0;
 	}
-
-	${FooterActionsContainer} {
-		padding: 5px 10px 5px;
-	}
 `;
 
 const TopOrBottomContainerStyle = css<IStyledSideProps>`
@@ -171,11 +179,19 @@ const TopOrBottomContainerStyle = css<IStyledSideProps>`
 	justify-content: flex-start;
 	align-items: center;
 
+	@media (min-width: ${(props) => props.theme.breakpoints.md}) {
+		#sideBtnMoreConfig {
+			display: none;
+		}
+		padding-left: 20px;
+	}
 	@media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-		flex-flow: column nowrap;
-		align-items: stretch;
 		height: auto;
-		padding: 2px;
+		padding: 2px 10px;
+
+		${FooterActionsContainer} {
+			display: none;
+		}
 	}
 
 	${SearchContainer} {
@@ -197,7 +213,7 @@ const TopOrBottomContainerStyle = css<IStyledSideProps>`
 	}
 
 	${ItemsContainer} {
-		justify-content: center;
+		justify-content: flex-start;
 		overflow-x: auto;
 		overflow-y: hidden;
 		flex-flow: row nowrap;
@@ -208,8 +224,8 @@ const TopOrBottomContainerStyle = css<IStyledSideProps>`
 		padding-top: 15px;
 
 		@media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-			margin-right: 0;
-			justify-content: flex-start;
+			margin-left: 15px;
+			border-radius: ${(props) => props.theme.borderRadius.medium};
 		}
 	}
 
@@ -218,20 +234,9 @@ const TopOrBottomContainerStyle = css<IStyledSideProps>`
 		padding: 0 1.25px;
 		height: 100%;
 		margin: 0 20px;
-	}
-
-	${FooterActionsContainer} {
-		padding: 0 10px;
-		width: 150px;
-		height: 100%;
-		justify-content: flex-end;
-
-		> * {
-			margin-left: 12px;
-		}
 
 		@media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-			display: none;
+			margin: 0 10px;
 		}
 	}
 `;

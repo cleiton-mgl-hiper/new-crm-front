@@ -6,6 +6,8 @@ export const LogoContainer = styled(Grid).attrs({
 	align: "center",
 	justify: "center",
 })`
+	margin-left: 0px !important;
+	margin-right: 0px !important;
 	padding: 0px 10px;
 	margin-bottom: 25px;
 	flex-wrap: nowrap;
@@ -17,7 +19,7 @@ export const LogoIconContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	padding: 5px;
+	padding: 7.5px;
 	border-radius: ${(props) => props.theme.borderRadius.medium};
 	background-color: ${(props) => props.theme.palette.primary.main};
 `;
