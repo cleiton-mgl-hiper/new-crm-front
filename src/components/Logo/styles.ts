@@ -1,0 +1,32 @@
+import styled from "styled-components";
+import Grid from "../Grid";
+
+export const LogoContainer = styled(Grid).attrs({
+	spacing: 1,
+	align: "center",
+	justify: "center",
+})`
+	padding: 0px 10px;
+	margin-bottom: 25px;
+	flex-wrap: nowrap;
+	position: relative;
+`;
+
+export const LogoIconContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 5px;
+	border-radius: ${(props) => props.theme.borderRadius.medium};
+	background-color: ${(props) => props.theme.palette.primary.main};
+`;
+
+export const LogoDesc = styled.h1`
+	font-size: 18px !important;
+	font-weight: 600 !important;
+	color: ${(props) => props.theme.palette.text.primary} !important;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+`;

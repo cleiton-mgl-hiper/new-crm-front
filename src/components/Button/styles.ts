@@ -43,17 +43,21 @@ export const Container = styled.button<IProps>`
 
 	border-radius: ${(props) => getBorderRadiusTheme(props.rounded, props.theme)};
 
-	:hover {
-		box-shadow: #00000033 0px 2px 4px -1px, #00000024 0px 4px 5px 0px, #0000001f 0px 1px 10px 0px;
+	:not(:disabled) {
+		:hover {
+			box-shadow: #00000033 0px 2px 4px -1px, #00000024 0px 4px 5px 0px, #0000001f 0px 1px 10px 0px;
+		}
+
+		:active {
+			background-color: ${(props) => {
+				if (props.variant === "outlined") return "rgba(25, 118, 210, .04)";
+				else {
+					return props.color === "white" ? "#F5F5F5" : getColorTheme(props.color, props.theme).dark;
+				}
+			}};
+		}
 	}
-	:active {
-		background-color: ${(props) => {
-			if (props.variant === "outlined") return "rgba(25, 118, 210, .04)";
-			else {
-				return props.color === "white" ? "#F5F5F5" : getColorTheme(props.color, props.theme).dark;
-			}
-		}};
-	}
+
 	:disabled {
 		opacity: 0.4;
 		cursor: default;

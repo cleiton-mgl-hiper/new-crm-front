@@ -197,6 +197,21 @@ const Messages: { [k in EnumMsg]: IMessageValue } = {
 		es: "Configuración de integración",
 		ptBR: "Configuração de integração",
 	},
+	[EnumMsg.MoverParaCima]: {
+		enUS: "Move up",
+		es: "Muévete a la cima",
+		ptBR: "Mover para cima",
+	},
+	[EnumMsg.MoverParaEsquerda]: {
+		enUS: "Move left",
+		es: "Muévete a la izquierda",
+		ptBR: "Mover para esquerda",
+	},
+	[EnumMsg.MoverParaDireita]: {
+		enUS: "Move right",
+		es: "Muévete a la derecha",
+		ptBR: "Mover para direita",
+	},
 };
 
 export default Messages;

@@ -1,4 +1,6 @@
+import MenuPositionType from "../../../contexts/MenuContext/types/MenuPositionType";
+
 export default interface IStyledContentContainerProps {
-	menuPosition: "left" | "right";
+	menuPosition: MenuPositionType;
 	menuIsOpen: boolean;
 }

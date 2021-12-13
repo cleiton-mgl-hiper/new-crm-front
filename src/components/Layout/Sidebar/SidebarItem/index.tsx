@@ -1,7 +1,7 @@
 import { FC, memo, useEffect, useMemo, useState } from "react";
 import ISidebarItemProps from "./interfaces/ISidebarItemProps";
 import * as S from "./styles";
-import { ContextMenu } from "devextreme-react";
+import { ContextMenu, Popover } from "devextreme-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslate } from "../../../../contexts/TranslateContext";
 import IItemActionMenuDataSource from "./interfaces/IItemActionMenuDataSource";
@@ -59,9 +59,27 @@ const SidebarItem: FC<ISidebarItemProps> = ({
 	useEffect(() => {
 		if (subRoutes?.length && searchValue && searchValue.trim()?.length) {
 			const valueSearch = searchValue.trim().toLocaleLowerCase();
-			setShowingSubItems((value) => value || subRoutes.findIndex((sr) => translate(sr.name).toLowerCase().indexOf(valueSearch) >= 0) >= 0);
+			const containsSubItemSearch = subRoutes.findIndex((sr) => translate(sr.name).toLowerCase().indexOf(valueSearch) >= 0) >= 0;
+			setShowingSubItems((value) => value || (sideBarPosition !== "top" && containsSubItemSearch));
 		} else setShowingSubItems(false);
-	}, [searchValue, subRoutes, translate]);
+	}, [searchValue, subRoutes, sideBarPosition, translate]);
+
+	const getSubItemsTemplate = () => {
+		return (subRoutes || [])
+			.filter((sr) => {
+				if (!searchValue?.length) return true;
+				const valueSearch = searchValue.trim().toLocaleLowerCase();
+				return translate(sr.name).toLowerCase().indexOf(valueSearch) >= 0;
+			})
+			.map(({ name, subPath }) => {
+				const subItemId = itemId.concat(`__${subPath.replaceAll("/", "")}`);
+				return (
+					<S.SidebarItem key={subItemId} id={subItemId} onClick={() => handleItemClick(subPath)} isSubItem sideBarPosition={sideBarPosition}>
+						<S.SidebarItemText>{translate(name)}</S.SidebarItemText>
+					</S.SidebarItem>
+				);
+			});
+	};
 
 	return (
 		<S.Container>
@@ -73,6 +91,7 @@ const SidebarItem: FC<ISidebarItemProps> = ({
 				showingSubItems={showingSubItems}
 				sideBarPosition={sideBarPosition}
 				sideBarCompactMode={sideBarCompactMode}
+				title={translate(text)}
 			>
 				{Icon ? (
 					<S.SidebarItemIconContainer>
@@ -85,22 +104,20 @@ const SidebarItem: FC<ISidebarItemProps> = ({
 			</S.SidebarItem>
 
 			{subRoutes?.length ? (
-				<S.SubItemsContainer show={showingSubItems}>
-					{subRoutes
-						.filter((sr) => {
-							if (!searchValue?.length) return true;
-							const valueSearch = searchValue.trim().toLocaleLowerCase();
-							return translate(sr.name).toLowerCase().indexOf(valueSearch) >= 0;
-						})
-						.map(({ name, subPath }) => {
-							const subItemId = itemId.concat(`__${subPath.replaceAll("/", "")}`);
-							return (
-								<S.SidebarItem key={subItemId} id={subItemId} onClick={() => handleItemClick(subPath)} isSubItem sideBarPosition={sideBarPosition}>
-									<S.SidebarItemText>{translate(name)}</S.SidebarItemText>
-								</S.SidebarItem>
-							);
-						})}
-				</S.SubItemsContainer>
+				sideBarPosition === "left" || sideBarPosition === "right" ? (
+					<S.SubItemsContainer show={showingSubItems}>{getSubItemsTemplate()}</S.SubItemsContainer>
+				) : (
+					<Popover
+						target={`#${itemId}`}
+						visible={showingSubItems}
+						position="bottom"
+						showEvent="dxclick"
+						closeOnOutsideClick
+						onHiding={() => setShowingSubItems(false)}
+					>
+						<S.SubItemsContainer show>{getSubItemsTemplate()}</S.SubItemsContainer>
+					</Popover>
+				)
 			) : null}
 
 			<ContextMenu

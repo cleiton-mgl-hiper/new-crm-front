@@ -23,4 +23,38 @@ export default createGlobalStyle`
 	#root {
 		height: 100vh;
 	}
+
+	::-webkit-scrollbar {
+		width: 5px;
+		height: 5px;
+	}
+	::-webkit-scrollbar-button {
+		width: 0px;
+		height: 0px;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #a1a1a1;
+		border: 0px none #f5f5f5;
+		border-radius: 50px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: #bababa;
+	}
+	::-webkit-scrollbar-thumb:active {
+		background: #8f8f8f;
+	}
+	::-webkit-scrollbar-track {
+		background: #f5f5f5;
+		border: 0px none #f5f5f5;
+		border-radius: 50px;
+	}
+	::-webkit-scrollbar-track:hover {
+		background: #f5f5f5;
+	}
+	::-webkit-scrollbar-track:active {
+		background: #fffafa;
+	}
+	::-webkit-scrollbar-corner {
+		background: transparent;
+	}
 `;

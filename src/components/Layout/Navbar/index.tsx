@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import * as S from "./styles";
 import IProps from "./interfaces/IProps";
 import { MdNotifications, MdPersonOutline } from "react-icons/md";
@@ -7,9 +7,10 @@ import { ReactComponent as SpainIcon } from "../../../assets/svg/spain.svg";
 import { ReactComponent as USAIcon } from "../../../assets/svg/usa.svg";
 import ChangeLanguage from "../../ChangeLanguage";
 import { useTranslate } from "../../../contexts/TranslateContext";
-import LangType from "../../../translate/types/LangType";
 import IconButton from "../../IconButton";
 import { useMenu } from "../../../contexts/MenuContext";
+import Logo from "../../Logo";
+import { Popover } from "devextreme-react";
 
 const Navbar: FC<IProps> = (props) => {
 	const [changingLang, setChangingLang] = useState(false);
@@ -22,33 +23,31 @@ const Navbar: FC<IProps> = (props) => {
 		state: { open: menuIsOpen, position: menuPosition },
 	} = useMenu();
 
-	const langs: LangType[] = useMemo(() => ["ptBR", "enUS", "es"], []);
-	const changeLangOrder: LangType[] = useMemo(
-		() =>
-			langs.sort((x, y) => {
-				if (x === lang) return 1;
-				if (y === lang) return -1;
-				if (x === "ptBR") return -1;
-				return 1;
-			}),
-		[langs, lang]
-	);
-
 	return (
-		<S.Container reverse={menuPosition === "right"} menuIsOpen={menuIsOpen} menuPosition={menuPosition}>
-			<S.Separator />
-			{changingLang ? (
-				<ChangeLanguage callback={() => setChangingLang(false)} order={changeLangOrder} />
-			) : (
-				<S.LangContainer onClick={() => setChangingLang(true)}>
+		<>
+			<S.Container reverse={menuPosition === "right"} menuIsOpen={menuIsOpen} menuPosition={menuPosition}>
+				{menuPosition === "top" && <Logo />}
+				<S.Separator />
+				<S.LangContainer onClick={() => setChangingLang(true)} id="langNavBtnChanger">
 					{lang === "enUS" && <USAIcon height="20" />}
 					{lang === "es" && <SpainIcon height="20" />}
 					{lang === "ptBR" && <BrazilIcon height="20" />}
 				</S.LangContainer>
-			)}
-			<IconButton color="white" icon={MdNotifications} />
-			<IconButton color="white" icon={MdPersonOutline} />
-		</S.Container>
+				<IconButton color="white" icon={MdNotifications} />
+				<IconButton color="white" icon={MdPersonOutline} />
+			</S.Container>
+
+			<Popover
+				target="#langNavBtnChanger"
+				visible={changingLang}
+				position="bottom"
+				showEvent="dxclick"
+				closeOnOutsideClick
+				onHiding={() => setChangingLang(false)}
+			>
+				<ChangeLanguage callback={() => setChangingLang(false)} />
+			</Popover>
+		</>
 	);
 };
 

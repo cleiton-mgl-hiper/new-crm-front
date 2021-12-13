@@ -22,6 +22,18 @@ export const Container = styled.div`
 	}
 `;
 
+export const CurrentPageName = styled.div<IStyledCurrentPageNameProps>`
+	padding: 0px 20px 5px 40px;
+	display: flex;
+	justify-content: ${(props) => (props.reverse ? "flex-end" : "flex-start")};
+	align-items: flex-end;
+	font-weight: 600;
+
+	> .pageNameSpan {
+		margin-left: 10px;
+	}
+`;
+
 export const ContentContainer = styled.div<IStyledContentContainerProps>`
 	height: 100%;
 	width: 100%;
@@ -30,7 +42,7 @@ export const ContentContainer = styled.div<IStyledContentContainerProps>`
 	flex-flow: column nowrap;
 	justify-content: flex-start;
 	align-items: stretch;
-	transition: padding 0.2s ease-in-out;
+	transition: padding 0.15s ease-in-out;
 	padding-left: ${(props) => (props.menuPosition === "left" ? (props.menuIsOpen ? "230px" : "60px") : "")};
 	padding-right: ${(props) => (props.menuPosition === "right" ? (props.menuIsOpen ? "230px" : "60px") : "")};
 	z-index: 1;
@@ -38,6 +50,17 @@ export const ContentContainer = styled.div<IStyledContentContainerProps>`
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		padding-left: ${(props) => (props.menuPosition === "left" ? "60px" : "")};
 		padding-right: ${(props) => (props.menuPosition === "right" ? "60px" : "")};
+	}
+
+	${CurrentPageName} {
+		${(props) =>
+			props.menuPosition === "left" || props.menuPosition === "right"
+				? `
+			@media (min-width: ${props.theme.breakpoints.md}) {
+				margin-top: -30px;
+			}
+		`
+				: "margin-top: 15px;"}
 	}
 `;
 
@@ -53,21 +76,5 @@ export const Main = styled.main`
 	}
 	> *:nth-child(1) {
 		min-height: calc(30% + 100px);
-	}
-`;
-
-export const CurrentPageName = styled.div<IStyledCurrentPageNameProps>`
-	padding: 0px 20px 5px 40px;
-	display: flex;
-	justify-content: ${(props) => (props.reverse ? "flex-end" : "flex-start")};
-	align-items: flex-end;
-	font-weight: 600;
-
-	@media (min-width: ${(props) => props.theme.breakpoints.md}) {
-		margin-top: -30px;
-	}
-
-	> .pageNameSpan {
-		margin-left: 10px;
 	}
 `;

@@ -38,6 +38,9 @@ enum EnumMsg {
 	Configuracao,
 	ConfiguracaoNotificacao,
 	ConfiguracaoIntegracao,
+	MoverParaCima,
+	MoverParaEsquerda,
+	MoverParaDireita,
 }
 
 export default EnumMsg;

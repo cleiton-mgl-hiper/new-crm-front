@@ -1,19 +1,9 @@
-import { FC, memo, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import IProps from "./interfaces/IProps";
 import IMenuItem from "./interfaces/IMenuItem";
 import KeyItemActionType from "./SidebarItem/types/KeyItemActionType";
 import * as S from "./styles";
-import Grid from "../../Grid";
-import {
-	MdOutlineArrowForward,
-	MdOutlineArrowBack,
-	MdComputer,
-	MdSearch,
-	MdSettingsBackupRestore,
-	MdVisibilityOff,
-	MdVisibility,
-	MdOutlinePushPin,
-} from "react-icons/md";
+import { MdSearch, MdSettingsBackupRestore, MdVisibilityOff, MdVisibility, MdOutlinePushPin, MdOpenWith } from "react-icons/md";
 import routes from "../../../config/routes";
 import EnumMenuGroup from "../../../config/enums/EnumMenuGroup";
 import EnumFlagMenuItem from "./enums/EnumFlagMenuItem";
@@ -23,6 +13,10 @@ import IconButton from "../../IconButton";
 import { useMenu } from "../../../contexts/MenuContext";
 import IMenuItemsList from "./interfaces/IMenuItemsList";
 import { useTheme } from "styled-components";
+import Logo from "../../Logo";
+import { ContextMenu } from "devextreme-react";
+import IOptionChangePosition from "./interfaces/IOptionChangePosition";
+import EnumMsg from "../../../translate/enums/EnumMsg";
 
 const Sidebar: FC<IProps> = (props) => {
 	//#region Context
@@ -61,6 +55,16 @@ const Sidebar: FC<IProps> = (props) => {
 		[defaultItems]
 	);
 
+	const optionsToChangePosition: IOptionChangePosition[] = useMemo(() => {
+		let valor: IOptionChangePosition[] = [
+			{ text: translate(EnumMsg.MoverParaCima), value: "top" },
+			{ text: translate(EnumMsg.MoverParaEsquerda), value: "left" },
+			{ text: translate(EnumMsg.MoverParaDireita), value: "right" },
+		];
+
+		return valor.filter((x) => x.value !== menuState.position);
+	}, [menuState.position, translate]);
+
 	//#endregion
 
 	//#region State
@@ -70,6 +74,7 @@ const Sidebar: FC<IProps> = (props) => {
 	const [haveHiddenItems, setHaveHiddenItems] = useState<boolean>(false);
 	const [haveFavoriteItems, setHaveFavoriteItems] = useState<boolean>(false);
 	const [items, setItems] = useState<IMenuItemsList>({ default: [], favorites: [], hidden: [] });
+	const [positionOptionsVisible, setPositionOptionsVisible] = useState<boolean>(false);
 
 	//#endregion
 
@@ -168,72 +173,22 @@ const Sidebar: FC<IProps> = (props) => {
 
 	//#endregion
 
-	const getFooterActions = () => {
-		const actions: ReactElement[] = [];
-
-		if (menuState.open) {
-			if (menuState.favorites?.length || menuState.hidden?.length) {
-				actions.push(
-					<IconButton
-						key="footer_action_restore_config"
-						icon={MdSettingsBackupRestore}
-						color="white"
-						onClick={() => {
-							menuDispatch({ type: "SET_MENU_CONFIG", payload: { open: true, favorites: [], hidden: [], position: menuState.position } });
-						}}
-					/>
-				);
-			}
-
-			if (haveHiddenItems) {
-				actions.push(
-					<IconButton
-						key="footer_action_show_hidden_items"
-						icon={showingHiddenItems ? MdVisibility : MdVisibilityOff}
-						color="white"
-						onClick={() => setShowingHiddenItems((value) => !value)}
-					/>
-				);
-			}
-		}
-
-		actions.push(
-			<IconButton
-				key="footer_action_change_side_position"
-				icon={menuState.position === "left" ? MdOutlineArrowForward : MdOutlineArrowBack}
-				color="white"
-				onClick={() => {
-					const newPosition = menuState.position === "left" ? "right" : "left";
-					menuDispatch({ type: "SET_MENU_POSITION", payload: newPosition });
-				}}
-			/>
-		);
-
-		if (menuState.position === "left") return actions;
-		return actions.reverse();
-	};
-
 	return (
 		<S.Container id="sidebar-menu" position={menuState.position} isOpen={menuState.open}>
-			<S.LogoContainer>
-				<Grid item>
-					<S.LogoIconContainer>
-						<MdComputer size="20px" color="#FFF" />
-					</S.LogoIconContainer>
-				</Grid>
-				<Grid item>
-					<S.LogoDesc>FRG CRM</S.LogoDesc>
-				</Grid>
-				<S.FixBtn
-					fixed={menuState.open}
-					menuPosition={menuState.position}
-					onClick={() => menuDispatch({ type: "SET_MENU_OPEN", payload: !menuState.open })}
-				>
-					<MdOutlinePushPin size="20px" />
-				</S.FixBtn>
-			</S.LogoContainer>
-
-			<S.EmpresaLink>1254 - Fulltime homologação</S.EmpresaLink>
+			{(menuState.position === "left" || menuState.position === "right") && (
+				<>
+					<Logo>
+						<S.FixBtn
+							fixed={menuState.open}
+							menuPosition={menuState.position}
+							onClick={() => menuDispatch({ type: "SET_MENU_OPEN", payload: !menuState.open })}
+						>
+							<MdOutlinePushPin size="20px" />
+						</S.FixBtn>
+					</Logo>
+					<S.EmpresaLink>1254 - Fulltime homologação</S.EmpresaLink>
+				</>
+			)}
 
 			<S.SearchContainer>
 				<S.SearchField value={searchValue} onChange={(value) => setSearchValue(value)} />
@@ -290,8 +245,43 @@ const Sidebar: FC<IProps> = (props) => {
 				})}
 			</S.ItemsContainer>
 
-			<S.Divider />
-			<S.FooterActionsContainer>{getFooterActions()}</S.FooterActionsContainer>
+			<S.FooterActionsContainer>
+				<IconButton
+					icon={MdSettingsBackupRestore}
+					color="white"
+					onClick={() => {
+						menuDispatch({ type: "SET_MENU_CONFIG", payload: { open: true, favorites: [], hidden: [], position: menuState.position } });
+					}}
+					disabled={!menuState.favorites?.length && !menuState.hidden?.length}
+				/>
+				<IconButton
+					icon={showingHiddenItems ? MdVisibility : MdVisibilityOff}
+					color="white"
+					onClick={() => setShowingHiddenItems((value) => !value)}
+					disabled={!haveHiddenItems}
+				/>
+				<IconButton
+					id="sideBtnChangePosition"
+					icon={MdOpenWith}
+					color="white"
+					onClick={() => {
+						menuDispatch({ type: "SET_MENU_OPEN", payload: true });
+						setPositionOptionsVisible(true);
+					}}
+				/>
+			</S.FooterActionsContainer>
+			<ContextMenu
+				target="#sideBtnChangePosition"
+				visible={positionOptionsVisible}
+				dataSource={optionsToChangePosition}
+				closeOnOutsideClick
+				onHiding={() => setPositionOptionsVisible(false)}
+				onItemClick={({ itemData }) => {
+					let position = (itemData as IOptionChangePosition).value;
+					setPositionOptionsVisible(false);
+					menuDispatch({ type: "SET_MENU_POSITION", payload: position });
+				}}
+			/>
 		</S.Container>
 	);
 };
