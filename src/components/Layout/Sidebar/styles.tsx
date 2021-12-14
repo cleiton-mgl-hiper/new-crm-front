@@ -107,6 +107,7 @@ const LeftOrRightContainerStyle = css<IStyledSideProps>`
 	width: 230px;
 	background-color: ${(props) => props.theme.palette.background.paper};
 	box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.25);
+	box-shadow: ${(props) => (props.position === "left" ? "4px 0px 4px 0px rgba(0, 0, 0, 0.25)" : "-4px 0px 4px 0px rgba(0, 0, 0, 0.25)")};
 	overflow: hidden;
 	padding: 15px 0px 10px;
 	display: flex;
@@ -171,7 +172,7 @@ const TopOrBottomContainerStyle = css<IStyledSideProps>`
 	width: 100%;
 	min-width: 100vw;
 	background-color: ${(props) => props.theme.palette.background.paper};
-	box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.25);
+	box-shadow: ${(props) => (props.position === "top" ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" : "0px -4px 4px 0px rgba(0, 0, 0, 0.25)")};
 	overflow: hidden;
 	padding: 2px 10px;
 	display: flex;
