@@ -39,6 +39,7 @@ enum EnumMsg {
 	ConfiguracaoNotificacao,
 	ConfiguracaoIntegracao,
 	MoverParaCima,
+	MoverParaBaixo,
 	MoverParaEsquerda,
 	MoverParaDireita,
 }

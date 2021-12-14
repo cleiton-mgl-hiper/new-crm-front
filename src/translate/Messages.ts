@@ -199,12 +199,17 @@ const Messages: { [k in EnumMsg]: IMessageValue } = {
 	},
 	[EnumMsg.MoverParaCima]: {
 		enUS: "Move up",
-		es: "Muévete a la cima",
+		es: "Muévete a la arriba",
 		ptBR: "Mover para cima",
+	},
+	[EnumMsg.MoverParaBaixo]: {
+		enUS: "Move down",
+		es: "Muévete a la abajo",
+		ptBR: "Mover para baixo",
 	},
 	[EnumMsg.MoverParaEsquerda]: {
 		enUS: "Move left",
-		es: "Muévete a la izquierda",
+		es: "Muévete a la Izquierda",
 		ptBR: "Mover para esquerda",
 	},
 	[EnumMsg.MoverParaDireita]: {

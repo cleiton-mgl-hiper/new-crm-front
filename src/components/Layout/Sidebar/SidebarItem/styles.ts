@@ -133,14 +133,10 @@ const TopOrBottomSidebarItemStyle = css<ISidebarItemStyledProps>`
 		position: absolute;
 		background-color: ${(props) => props.theme.palette.primary.main};
 		height: 10px;
-		top: -6px;
+		top: -10px;
 		left: 0;
 		right: 0;
 		border-radius: 5px;
-
-		@media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-			top: -12px;
-		}
 	}
 
 	.icon-container {

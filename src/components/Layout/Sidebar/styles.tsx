@@ -167,31 +167,20 @@ const LeftOrRightContainerStyle = css<IStyledSideProps>`
 `;
 
 const TopOrBottomContainerStyle = css<IStyledSideProps>`
-	height: 80px;
+	height: auto;
 	width: 100%;
 	min-width: 100vw;
 	background-color: ${(props) => props.theme.palette.background.paper};
 	box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.25);
 	overflow: hidden;
-	padding: 10px;
+	padding: 2px 10px;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-start;
 	align-items: center;
 
 	@media (min-width: ${(props) => props.theme.breakpoints.md}) {
-		#sideBtnMoreConfig {
-			display: none;
-		}
 		padding-left: 20px;
-	}
-	@media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-		height: auto;
-		padding: 2px 10px;
-
-		${FooterActionsContainer} {
-			display: none;
-		}
 	}
 
 	${SearchContainer} {
@@ -220,12 +209,11 @@ const TopOrBottomContainerStyle = css<IStyledSideProps>`
 		align-items: center;
 		margin-right: 15px;
 		height: 100%;
-		padding-bottom: 15px;
-		padding-top: 15px;
+		padding-bottom: 7.5px;
+		padding-top: 7.5px;
 
 		@media (max-width: ${(props) => props.theme.breakpoints.sm}) {
 			margin-left: 15px;
-			border-radius: ${(props) => props.theme.borderRadius.medium};
 		}
 	}
 

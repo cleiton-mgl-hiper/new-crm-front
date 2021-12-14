@@ -59,6 +59,7 @@ const Sidebar: FC<IProps> = (props) => {
 	const optionsToChangePosition: IOptionChangePosition[] = useMemo(() => {
 		let valor: IOptionChangePosition[] = [
 			{ text: translate(EnumMsg.MoverParaCima), value: "top" },
+			{ text: translate(EnumMsg.MoverParaBaixo), value: "bottom" },
 			{ text: translate(EnumMsg.MoverParaEsquerda), value: "left" },
 			{ text: translate(EnumMsg.MoverParaDireita), value: "right" },
 		];
@@ -198,6 +199,7 @@ const Sidebar: FC<IProps> = (props) => {
 				icon={MdOpenWith}
 				onClick={() => {
 					menuDispatch({ type: "SET_MENU_OPEN", payload: true });
+					setMoreConfigVisible(false);
 					setPositionOptionsVisible(true);
 				}}
 			/>
@@ -221,7 +223,9 @@ const Sidebar: FC<IProps> = (props) => {
 				</>
 			)}
 
-			{menuState.position === "top" && <IconButton icon={MdBusinessCenter} color="primary" variant="outlined" onClick={() => null} />}
+			{(menuState.position === "top" || menuState.position === "bottom") && (
+				<IconButton icon={MdBusinessCenter} color="primary" variant="outlined" onClick={() => null} />
+			)}
 
 			<S.SearchContainer>
 				<S.SearchField value={searchValue} onChange={(value) => setSearchValue(value)} />
@@ -278,24 +282,19 @@ const Sidebar: FC<IProps> = (props) => {
 				})}
 			</S.ItemsContainer>
 
-			<S.FooterActionsContainer>{getBtnsConfigActions()}</S.FooterActionsContainer>
-			{menuState.position === "top" && (
+			{menuState.position === "top" || menuState.position === "bottom" ? (
 				<>
-					<IconButton
-						id="sideBtnMoreConfig"
-						icon={MdMoreVert}
-						color="primary"
-						variant="outlined"
-						onClick={() => setMoreConfigVisible((value) => !value)}
-					/>
+					<S.ConfigActionButton id="sideBtnMoreConfig" icon={MdMoreVert} onClick={() => setMoreConfigVisible((value) => !value)} />
 					<Popover target="#sideBtnMoreConfig" visible={moreConfigVisible} closeOnOutsideClick onHiding={() => setMoreConfigVisible(false)}>
 						<Grid justify="space-evenly">{getBtnsConfigActions()}</Grid>
 					</Popover>
 				</>
+			) : (
+				<S.FooterActionsContainer>{getBtnsConfigActions()}</S.FooterActionsContainer>
 			)}
 
 			<ContextMenu
-				target="#sideBtnChangePosition"
+				target={menuState.position === "top" || menuState.position === "bottom" ? "#sideBtnMoreConfig" : "#sideBtnChangePosition"}
 				visible={positionOptionsVisible}
 				dataSource={optionsToChangePosition}
 				closeOnOutsideClick
@@ -303,7 +302,6 @@ const Sidebar: FC<IProps> = (props) => {
 				onItemClick={({ itemData }) => {
 					let position = (itemData as IOptionChangePosition).value;
 					setPositionOptionsVisible(false);
-					setMoreConfigVisible(false);
 					menuDispatch({ type: "SET_MENU_POSITION", payload: position });
 				}}
 			/>

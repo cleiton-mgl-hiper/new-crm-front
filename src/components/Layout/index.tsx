@@ -17,7 +17,7 @@ const Layout: FC<IProps> = ({ name, icon: Icon, children }) => {
 	return (
 		<S.Container>
 			<Navbar />
-			<Sidebar />
+			{menuPosition !== "bottom" && <Sidebar />}
 			<S.ContentContainer menuPosition={menuPosition} menuIsOpen={menuIsOpen}>
 				<S.CurrentPageName reverse={menuPosition === "right"}>
 					{Icon && <Icon color={theme.palette.black.main} size="20px" />}
@@ -25,6 +25,7 @@ const Layout: FC<IProps> = ({ name, icon: Icon, children }) => {
 				</S.CurrentPageName>
 				<S.Main>{children}</S.Main>
 			</S.ContentContainer>
+			{menuPosition === "bottom" && <Sidebar />}
 		</S.Container>
 	);
 };

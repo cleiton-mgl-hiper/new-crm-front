@@ -60,7 +60,7 @@ const SidebarItem: FC<ISidebarItemProps> = ({
 		if (subRoutes?.length && searchValue && searchValue.trim()?.length) {
 			const valueSearch = searchValue.trim().toLocaleLowerCase();
 			const containsSubItemSearch = subRoutes.findIndex((sr) => translate(sr.name).toLowerCase().indexOf(valueSearch) >= 0) >= 0;
-			setShowingSubItems((value) => value || (sideBarPosition !== "top" && containsSubItemSearch));
+			setShowingSubItems((value) => value || ((sideBarPosition === "left" || sideBarPosition === "right") && containsSubItemSearch));
 		} else setShowingSubItems(false);
 	}, [searchValue, subRoutes, sideBarPosition, translate]);
 
@@ -110,7 +110,7 @@ const SidebarItem: FC<ISidebarItemProps> = ({
 					<Popover
 						target={`#${itemId}`}
 						visible={showingSubItems}
-						position="bottom"
+						position={sideBarPosition === "top" ? "bottom" : "top"}
 						showEvent="dxclick"
 						closeOnOutsideClick
 						onHiding={() => setShowingSubItems(false)}

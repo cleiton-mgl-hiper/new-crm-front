@@ -1,3 +1,3 @@
-type MenuPositionType = "left" | "right" | "top";
+type MenuPositionType = "left" | "right" | "top" | "bottom";
 
 export default MenuPositionType;

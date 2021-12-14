@@ -35,7 +35,7 @@ export const CurrentPageName = styled.div<IStyledCurrentPageNameProps>`
 `;
 
 export const ContentContainer = styled.div<IStyledContentContainerProps>`
-	height: 100%;
+	flex: 1;
 	width: 100%;
 	position: relative;
 	display: flex;
@@ -46,6 +46,7 @@ export const ContentContainer = styled.div<IStyledContentContainerProps>`
 	padding-left: ${(props) => (props.menuPosition === "left" ? (props.menuIsOpen ? "230px" : "60px") : "")};
 	padding-right: ${(props) => (props.menuPosition === "right" ? (props.menuIsOpen ? "230px" : "60px") : "")};
 	z-index: 1;
+	overflow: unset;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		padding-left: ${(props) => (props.menuPosition === "left" ? "60px" : "")};
@@ -56,10 +57,10 @@ export const ContentContainer = styled.div<IStyledContentContainerProps>`
 		${(props) =>
 			props.menuPosition === "left" || props.menuPosition === "right"
 				? `
-			@media (min-width: ${props.theme.breakpoints.md}) {
-				margin-top: -30px;
-			}
-		`
+					@media (min-width: ${props.theme.breakpoints.md}) {
+						margin-top: -30px;
+					}
+				`
 				: "margin-top: 15px;"}
 	}
 `;
