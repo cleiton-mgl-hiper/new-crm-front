@@ -36,6 +36,11 @@ export const SubItemsContainer = styled.div<IStyledSubItemsContainerProps>`
 	${(props) => (props.show ? "height: auto;" : "")}
 `;
 
+export const OptionsBtn = styled.div`
+	font-size: 18px;
+	color: ${(props) => props.theme.palette.text.secondary};
+`;
+
 const LeftOrRightSidebarItemStyle = css<ISidebarItemStyledProps>`
 	position: relative;
 	cursor: pointer;
@@ -50,8 +55,21 @@ const LeftOrRightSidebarItemStyle = css<ISidebarItemStyledProps>`
 	border-radius: ${(props) => (props.isSubItem ? "0px" : props.theme.borderRadius.medium)};
 	transition: 0.2s;
 
+	${OptionsBtn} {
+		position: absolute;
+		right: ${(props) => (props.containsSubItem ? "25px" : "15px")};
+		top: 5px;
+		display: none;
+	}
+
 	:hover {
 		background-color: #f5f5f5;
+
+		@media (min-width: ${(props) => props.theme.breakpoints.md}) {
+			${OptionsBtn} {
+				display: block;
+			}
+		}
 	}
 	:active {
 		background-color: #e9e9e9;
@@ -76,9 +94,9 @@ const LeftOrRightSidebarItemStyle = css<ISidebarItemStyledProps>`
 					display: ${!props.sideBarCompactMode ? "block" : "none"};
 					position: absolute;
 					right: 15px;
-					top: calc(50% - 3.75px);
-					height: 7.5px;
-					width: 7.5px;
+					top: calc(50% - 2.5px);
+					height: 5px;
+					width: 5px;
 					padding: 0px;
 					margin: 0px;
 					border-top: 2px solid ${props.theme.palette.text.secondary};
@@ -120,8 +138,20 @@ const TopOrBottomSidebarItemStyle = css<ISidebarItemStyledProps>`
 		padding-left: 0px;
 	}
 
+	${OptionsBtn} {
+		width: 0;
+		overflow: hidden;
+		transition: width 0.2s;
+	}
+
 	:hover {
 		background-color: #f5f5f5;
+
+		@media (min-width: ${(props) => props.theme.breakpoints.md}) {
+			${OptionsBtn} {
+				width: 15px;
+			}
+		}
 	}
 	:active {
 		background-color: #e9e9e9;

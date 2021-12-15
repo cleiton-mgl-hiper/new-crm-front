@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useMemo, useState } from "react";
+import { FC, memo, useEffect, useMemo, useRef, useState } from "react";
 import ISidebarItemProps from "./interfaces/ISidebarItemProps";
 import * as S from "./styles";
 import { ContextMenu, Popover } from "devextreme-react";
@@ -7,6 +7,7 @@ import { useTranslate } from "../../../../contexts/TranslateContext";
 import IItemActionMenuDataSource from "./interfaces/IItemActionMenuDataSource";
 import EnumMsg from "../../../../translate/enums/EnumMsg";
 import EnumFlagMenuItem from "../enums/EnumFlagMenuItem";
+import { MdMoreVert } from "react-icons/md";
 
 const SidebarItem: FC<ISidebarItemProps> = ({
 	path,
@@ -81,6 +82,7 @@ const SidebarItem: FC<ISidebarItemProps> = ({
 			});
 	};
 
+	const actionsMenuRef = useRef<ContextMenu>(null);
 	return (
 		<S.Container>
 			<S.SidebarItem
@@ -101,6 +103,14 @@ const SidebarItem: FC<ISidebarItemProps> = ({
 					<></>
 				)}
 				<S.SidebarItemText>{translate(text)}</S.SidebarItemText>
+				<S.OptionsBtn
+					onClick={(e) => {
+						e.stopPropagation();
+						actionsMenuRef.current?.instance.show();
+					}}
+				>
+					<MdMoreVert />
+				</S.OptionsBtn>
 			</S.SidebarItem>
 
 			{subRoutes?.length ? (
@@ -121,8 +131,10 @@ const SidebarItem: FC<ISidebarItemProps> = ({
 			) : null}
 
 			<ContextMenu
+				ref={actionsMenuRef}
 				dataSource={menuDataSource}
 				target={`#${itemId}`}
+				position={{ my: sideBarPosition, at: "right", of: `#${itemId}` }}
 				onItemClick={({ itemData }) => {
 					const action = (itemData as IItemActionMenuDataSource).key;
 					handleAction(path, action);
