@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from "react";
+import { FC, FormEvent, useEffect, useState } from "react";
 import Container from "../../components/Container";
 import Grid from "../../components/Grid";
 import { IProps } from "./interfaces/IProps";
@@ -12,10 +12,13 @@ import { useTheme } from "styled-components";
 import EnumMsg from "../../translate/enums/EnumMsg";
 import { useTranslate } from "../../contexts/TranslateContext";
 import ChangeLanguage from "../../components/ChangeLanguage";
+import { signIn } from "../../services/crmApiService";
+import { useAuth } from "../../contexts/AuthContext";
 
 const LoginPage: FC<IProps> = (props) => {
 	const theme = useTheme();
 	const { translate } = useTranslate();
+	const { dispatch: authDispatch } = useAuth();
 
 	const [email, setEmail] = useState("");
 	const [senha, setSenha] = useState("");
@@ -23,11 +26,19 @@ const LoginPage: FC<IProps> = (props) => {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const obj = { email, senha };
-		console.log(obj);
-
-		props.routeNavigate("/dashboard");
+		signIn({ email, password: senha })
+			.then((data) => {
+				authDispatch({ type: "SIGN_IN", payload: { token: data.token, user: data.dados } });
+				props.routeNavigate("/dashboard");
+			})
+			.catch((err) => {
+				alert(JSON.stringify(err));
+			});
 	};
+
+	useEffect(() => {
+		authDispatch({ type: "SIGN_OUT" });
+	}, [authDispatch]);
 
 	return (
 		<Container noPadding fullHeight>
