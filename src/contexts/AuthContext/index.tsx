@@ -8,7 +8,7 @@ export const tokenStorageKey: string = "crm-api-token";
 const storageToken = localStorage.getItem(tokenStorageKey) as string | null;
 
 const userStorageKey: string = "crm-api-user";
-const storageUser = localStorage.getItem(userStorageKey) as IUser | null;
+const storageUser = JSON.parse(localStorage.getItem(userStorageKey) || "null") as IUser | null;
 
 const AuthContext = createContext({} as IValue);
 

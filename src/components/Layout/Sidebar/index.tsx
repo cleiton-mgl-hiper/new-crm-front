@@ -18,6 +18,7 @@ import { ContextMenu, Popover } from "devextreme-react";
 import IOptionChangePosition from "./interfaces/IOptionChangePosition";
 import EnumMsg from "../../../translate/enums/EnumMsg";
 import Grid from "../../Grid";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const Sidebar: FC<IProps> = (props) => {
 	//#region Context
@@ -25,6 +26,9 @@ const Sidebar: FC<IProps> = (props) => {
 	const theme = useTheme();
 	const { translate } = useTranslate();
 	const { state: menuState, dispatch: menuDispatch } = useMenu();
+	const {
+		state: { user },
+	} = useAuth();
 
 	//#endregion
 
@@ -78,6 +82,7 @@ const Sidebar: FC<IProps> = (props) => {
 	const [items, setItems] = useState<IMenuItemsList>({ default: [], favorites: [], hidden: [] });
 	const [positionOptionsVisible, setPositionOptionsVisible] = useState<boolean>(false);
 	const [moreConfigVisible, setMoreConfigVisible] = useState<boolean>(false);
+	const [selecionandoEmpresa, setSelecionandoEmpresa] = useState(false);
 
 	//#endregion
 
@@ -219,13 +224,30 @@ const Sidebar: FC<IProps> = (props) => {
 							<MdOutlinePushPin size="20px" />
 						</S.FixBtn>
 					</Logo>
-					<S.EmpresaLink>1254 - Fulltime homologação</S.EmpresaLink>
+					<S.EmpresaLink id="linkSelectEmpresa" onClick={() => setSelecionandoEmpresa((v) => !v)}>
+						{user?.empresasAcesso?.find((x) => x.id === user.empresaAtiva)?.nomeFantasia}
+					</S.EmpresaLink>
 				</>
 			)}
 
 			{(menuState.position === "top" || menuState.position === "bottom") && (
-				<IconButton icon={MdBusinessCenter} color="primary" variant="outlined" onClick={() => null} />
+				<IconButton id="linkSelectEmpresa" icon={MdBusinessCenter} color="primary" variant="outlined" onClick={() => setSelecionandoEmpresa((v) => !v)} />
 			)}
+
+			<Popover
+				target="#linkSelectEmpresa"
+				visible={selecionandoEmpresa}
+				position={menuState.position === "left" ? "right" : menuState.position === "right" ? "left" : menuState.position === "top" ? "bottom" : "top"}
+				showEvent="dxclick"
+				closeOnOutsideClick
+				onHiding={() => setSelecionandoEmpresa(false)}
+			>
+				<ul>
+					{user?.empresasAcesso?.map((x) => (
+						<li key={x.id}>{x.nomeFantasia}</li>
+					))}
+				</ul>
+			</Popover>
 
 			<S.SearchContainer>
 				<S.SearchField value={searchValue} onChange={(value) => setSearchValue(value)} />
