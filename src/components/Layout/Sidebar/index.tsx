@@ -28,6 +28,7 @@ const Sidebar: FC<IProps> = (props) => {
 	const { state: menuState, dispatch: menuDispatch } = useMenu();
 	const {
 		state: { user },
+		dispatch: authDispatch,
 	} = useAuth();
 
 	//#endregion
@@ -211,6 +212,11 @@ const Sidebar: FC<IProps> = (props) => {
 		</>
 	);
 
+	const changeEmpresaAtiva = (empresaId: number): void => {
+		authDispatch({ type: "SET_EMPRESA_ATIVA", payload: empresaId });
+		setSelecionandoEmpresa(false);
+	};
+
 	return (
 		<S.Container id="sidebar-menu" position={menuState.position} isOpen={menuState.open}>
 			{(menuState.position === "left" || menuState.position === "right") && (
@@ -224,14 +230,20 @@ const Sidebar: FC<IProps> = (props) => {
 							<MdOutlinePushPin size="20px" />
 						</S.FixBtn>
 					</Logo>
-					<S.EmpresaLink id="linkSelectEmpresa" onClick={() => setSelecionandoEmpresa((v) => !v)}>
+					<S.EmpresaLink id="linkSelectEmpresa" onClick={() => user?.empresasAcesso?.length && setSelecionandoEmpresa((v) => !v)}>
 						{user?.empresasAcesso?.find((x) => x.id === user.empresaAtiva)?.nomeFantasia}
 					</S.EmpresaLink>
 				</>
 			)}
 
 			{(menuState.position === "top" || menuState.position === "bottom") && (
-				<IconButton id="linkSelectEmpresa" icon={MdBusinessCenter} color="primary" variant="outlined" onClick={() => setSelecionandoEmpresa((v) => !v)} />
+				<IconButton
+					id="linkSelectEmpresa"
+					icon={MdBusinessCenter}
+					color="primary"
+					variant="outlined"
+					onClick={() => user?.empresasAcesso?.length && setSelecionandoEmpresa((v) => !v)}
+				/>
 			)}
 
 			<Popover
@@ -243,9 +255,18 @@ const Sidebar: FC<IProps> = (props) => {
 				onHiding={() => setSelecionandoEmpresa(false)}
 			>
 				<ul>
-					{user?.empresasAcesso?.map((x) => (
-						<li key={x.id}>{x.nomeFantasia}</li>
-					))}
+					{user?.empresasAcesso
+						?.filter((x) => x.id !== user?.empresaAtiva)
+						?.sort((x, y) => {
+							if (x.nomeFantasia < y.nomeFantasia) return -1;
+							if (x.nomeFantasia > y.nomeFantasia) return 1;
+							return 0;
+						})
+						?.map((x) => (
+							<S.ListItemSelectEmpresa key={x.id} onClick={() => changeEmpresaAtiva(x.id)}>
+								{x.nomeFantasia}
+							</S.ListItemSelectEmpresa>
+						))}
 				</ul>
 			</Popover>
 

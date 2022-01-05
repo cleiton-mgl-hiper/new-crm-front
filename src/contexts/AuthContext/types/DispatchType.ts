@@ -9,6 +9,11 @@ interface IDispatch_SIGN_OUT {
 	type: "SIGN_OUT";
 }
 
-type DispatchType = IDispatch_SIGN_IN | IDispatch_SIGN_OUT;
+interface IDispatch_SET_EMPRESA_ATIVA {
+	type: "SET_EMPRESA_ATIVA";
+	payload: number;
+}
+
+type DispatchType = IDispatch_SIGN_IN | IDispatch_SIGN_OUT | IDispatch_SET_EMPRESA_ATIVA;
 
 export default DispatchType;

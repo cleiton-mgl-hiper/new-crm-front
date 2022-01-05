@@ -28,7 +28,7 @@ const Navbar: FC<IProps> = (props) => {
 			<S.Container reverse={menuPosition === "right"} menuIsOpen={menuIsOpen} menuPosition={menuPosition}>
 				{(menuPosition === "top" || menuPosition === "bottom") && <Logo />}
 				<S.Separator />
-				<S.LangContainer onClick={() => setChangingLang(true)} id="langNavBtnChanger">
+				<S.LangContainer onClick={() => setChangingLang((v) => !v)} id="langNavBtnChanger">
 					{lang === "enUS" && <USAIcon height="20" />}
 					{lang === "es" && <SpainIcon height="20" />}
 					{lang === "ptBR" && <BrazilIcon height="20" />}

@@ -35,6 +35,8 @@ export const EmpresaLink = styled.a`
 	text-align: center;
 	padding: 0px 10px;
 	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	:hover {
 		text-decoration: underline;
 	}
@@ -232,4 +234,24 @@ const TopOrBottomContainerStyle = css<IStyledSideProps>`
 
 export const Container = styled.nav<IStyledSideProps>`
 	${(props) => (props.position === "right" || props.position === "left" ? LeftOrRightContainerStyle : TopOrBottomContainerStyle)}
+`;
+
+export const ListItemSelectEmpresa = styled.li`
+	list-style: none;
+	text-align: center;
+	padding: 7.5px 3px;
+	cursor: pointer;
+	width: 220px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+	:last-child {
+		border-bottom: none;
+	}
+
+	:hover {
+		background-color: ${(props) => props.theme.palette.background.main};
+	}
 `;
