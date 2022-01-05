@@ -12,7 +12,7 @@ const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
 		baseURL: baseURL,
 		headers: {
 			"Content-type": "Application/json",
-			Authorize: authToken ? `Bearer ${authToken}` : "",
+			Authorization: authToken ? `Bearer ${authToken}` : "",
 		},
 	};
 };
@@ -25,6 +25,10 @@ const onRequestError = (error: AxiosError): Promise<IDefaultServiceResponse<any>
 const onResponse = (response: AxiosResponse): AxiosResponse => response;
 
 const onResponseError = (error: AxiosError<string>): Promise<IDefaultServiceResponse<any>> => {
+	if (error?.response?.status === 401) {
+		window.location.href = "/";
+	}
+
 	return Promise.reject(error.response?.data);
 };
 

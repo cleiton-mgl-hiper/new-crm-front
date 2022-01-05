@@ -2,7 +2,7 @@ import ICrmRouteProps from "../components/CrmRoute/interfaces/IProps";
 import Layout from "../components/Layout";
 import LoginPage from "../pages/Login";
 import DashboardPage from "../pages/Dashboard";
-import TesteCadastroPage from "../pages/TesteCadastro";
+import MarcasPage from "../pages/Marcas";
 import EnumMsg from "../translate/enums/EnumMsg";
 import { MdDashboard, MdAccountBox, MdMonetizationOn, MdPermPhoneMsg, MdDesignServices, MdGroupWork, MdOutlineGroupWork, MdSettings } from "react-icons/md";
 import EnumMenuGroup from "./enums/EnumMenuGroup";
@@ -34,7 +34,7 @@ const routes: ICrmRouteProps[] = [
 	//#region COMERCIAL
 	{
 		path: "/contatos",
-		component: TesteCadastroPage,
+		component: DashboardPage,
 		layout: Layout,
 		name: EnumMsg.Contatos,
 		icon: MdAccountBox,
@@ -86,10 +86,10 @@ const routes: ICrmRouteProps[] = [
 		menuGroup: EnumMenuGroup.ProdutosServicos,
 	},
 	{
-		path: "/subgrupos",
-		component: DashboardPage,
+		path: "/marcas",
+		component: MarcasPage,
 		layout: Layout,
-		name: EnumMsg.Subgrupos,
+		name: EnumMsg.Marcas,
 		icon: MdOutlineGroupWork,
 		isPrivate: true,
 		displayOnMenu: true,

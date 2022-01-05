@@ -217,6 +217,56 @@ const Messages: { [k in EnumMsg]: IMessageValue } = {
 		es: "Muévete a la derecha",
 		ptBR: "Mover para direita",
 	},
+	[EnumMsg.Marcas]: {
+		enUS: "Brands",
+		es: "Marcas",
+		ptBR: "Marcas",
+	},
+	[EnumMsg.Codigo]: {
+		enUS: "Code",
+		es: "Código",
+		ptBR: "Código",
+	},
+	[EnumMsg.CodigoInvalido]: {
+		enUS: "Invalid code",
+		es: "Código invalido",
+		ptBR: "Código inválido",
+	},
+	[EnumMsg.Descricao]: {
+		enUS: "Description",
+		es: "Descripción",
+		ptBR: "Descrição",
+	},
+	[EnumMsg.DescricaoEhObrigatorio]: {
+		enUS: "Description is required",
+		es: "Se requiere la Descripción",
+		ptBR: "Desrição é obrigatória",
+	},
+	[EnumMsg.ADescricaoDeveTerNoMinimoDoisCaracteres]: {
+		enUS: "The description must be at least 2 characters long",
+		es: "La descripción debe tener al menos 2 caracteres",
+		ptBR: "A descrição deve ter no mínimo 2 caracteres",
+	},
+	[EnumMsg.ADescricaoDeveTerNoMaximoCemCaracteres]: {
+		enUS: "The description must have a maximum of 100 characters",
+		es: "La descripción debe tener un máximo de 100 caracteres",
+		ptBR: "A descrição deve ter no máximo 100 caracteres",
+	},
+	[EnumMsg.ErroInesperado]: {
+		enUS: "Unexpected error",
+		es: "Error inesperado",
+		ptBR: "Erro inesperado",
+	},
+	[EnumMsg.Adicionar]: {
+		enUS: "Add",
+		es: "Agregar",
+		ptBR: "Adicionar",
+	},
+	[EnumMsg.Voltar]: {
+		enUS: "Return",
+		es: "Regreso",
+		ptBR: "Voltar",
+	},
 };
 
 export default Messages;

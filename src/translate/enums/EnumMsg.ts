@@ -42,6 +42,16 @@ enum EnumMsg {
 	MoverParaBaixo,
 	MoverParaEsquerda,
 	MoverParaDireita,
+	Marcas,
+	Codigo,
+	CodigoInvalido,
+	Descricao,
+	DescricaoEhObrigatorio,
+	ADescricaoDeveTerNoMinimoDoisCaracteres,
+	ADescricaoDeveTerNoMaximoCemCaracteres,
+	ErroInesperado,
+	Adicionar,
+	Voltar,
 }
 
 export default EnumMsg;

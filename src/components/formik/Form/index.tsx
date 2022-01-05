@@ -35,7 +35,7 @@ function MyForm<T>(props: IProps<T>) {
 	};
 
 	return (
-		<Formik initialValues={props.initialValues} validate={handleValidate} onSubmit={props.submit} validateOnMount>
+		<Formik enableReinitialize initialValues={props.initialValues} validate={handleValidate} onSubmit={props.submit} validateOnMount>
 			{({ isValid, isSubmitting }) => (
 				<Form>
 					<Grid spacing={2} align="center">
@@ -46,7 +46,7 @@ function MyForm<T>(props: IProps<T>) {
 						))}
 						<Grid item xs={12}>
 							<Grid justify="flex-end">
-								<Button type="submit" color="primary" disabled={isSubmitting || !isValid}>
+								<Button type="submit" color="success" disabled={isSubmitting || !isValid}>
 									{translate(props.confirmText || EnumMsg.Confirmar)}
 								</Button>
 							</Grid>
