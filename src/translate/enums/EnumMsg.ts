@@ -52,6 +52,10 @@ enum EnumMsg {
 	ErroInesperado,
 	Adicionar,
 	Voltar,
+	Cancelar,
+	Confirmacao,
+	ORegistroSeraExcluidoPermanentemente,
+	OrigemProspect,
 }
 
 export default EnumMsg;

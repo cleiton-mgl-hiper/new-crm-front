@@ -1,8 +1,4 @@
-import IMarca from "../../../pages/Marcas/_cadastro/interfaces/IMarca";
+import IMarca from "../../../pages/Marcas/interfaces/IMarca";
+import IBaseCadastroPageService from "../../interfaces/IBaseCadastroPageServiceModule";
 
-export default interface IMarcasServiceModule {
-	get: (empresaId: number) => Promise<IMarca[]>;
-	getById: (id: number, empresaId: number) => Promise<IMarca | null>;
-	post: (marca: IMarca) => Promise<void>;
-	put: (marca: IMarca) => Promise<void>;
-}
+export default interface IMarcasServiceModule extends IBaseCadastroPageService<IMarca> {}

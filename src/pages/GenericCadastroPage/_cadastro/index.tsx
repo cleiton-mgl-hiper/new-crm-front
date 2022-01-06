@@ -1,29 +1,26 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import notify from "devextreme/ui/notify";
 import IProps from "./interfaces/IProps";
 import Form from "../../../components/formik/Form";
-import IMarca from "./interfaces/IMarca";
-import { configCadastro } from "./formConfig";
 import { FormikHelpers } from "formik";
 import { useTranslate } from "../../../contexts/TranslateContext";
 import EnumMsg from "../../../translate/enums/EnumMsg";
 import { useAuth } from "../../../contexts/AuthContext";
-import { MarcasServiceModule as service } from "../../../services/crmApiService";
 
-const CadastroMarca: FC<IProps> = ({ idEdit, onAdded, onUpdated }) => {
+function Cadastro<T>({ idEdit, onAdded, onUpdated, service, formConfig }: IProps<T>) {
 	const { translate } = useTranslate();
 	const {
 		state: { user },
 	} = useAuth();
 
-	const [initialValues, setInitialValues] = useState<IMarca>({ id: 0, codigo: 0, empresaId: user?.empresaAtiva || 0, descricao: "" });
+	const [initialValues, setInitialValues] = useState<T>({} as T);
 
-	const handleSubmit = (data: IMarca, actions: FormikHelpers<IMarca>) => {
+	const handleSubmit = (data: T, actions: FormikHelpers<T>) => {
 		actions.setSubmitting(true);
 
-		if (!data.id) {
+		if (!idEdit) {
 			service
-				.post(data)
+				.post(data, user?.empresaAtiva || 0)
 				.then(() => {
 					actions.resetForm();
 					notify(translate(EnumMsg.Sucesso), "success", 2000);
@@ -36,7 +33,7 @@ const CadastroMarca: FC<IProps> = ({ idEdit, onAdded, onUpdated }) => {
 				.finally(() => actions.setSubmitting(false));
 		} else {
 			service
-				.put(data)
+				.put(data, user?.empresaAtiva || 0)
 				.then(() => {
 					notify(translate(EnumMsg.Sucesso), "success", 2000);
 					onUpdated && onUpdated();
@@ -53,15 +50,15 @@ const CadastroMarca: FC<IProps> = ({ idEdit, onAdded, onUpdated }) => {
 		if (!!idEdit) {
 			service
 				.getById(idEdit, user?.empresaAtiva || 0)
-				.then((marca) => marca && setInitialValues(marca))
+				.then((entity) => entity && setInitialValues(entity))
 				.catch((err) => {
 					console.error(err);
 					notify(translate(EnumMsg.ErroInesperado), "success", 2000);
 				});
 		}
-	}, [idEdit, translate, user?.empresaAtiva]);
+	}, [idEdit, translate, user?.empresaAtiva, service]);
 
-	return <Form<IMarca> config={configCadastro} initialValues={initialValues} submit={handleSubmit} />;
-};
+	return <Form<T> config={formConfig} initialValues={initialValues} submit={handleSubmit} />;
+}
 
-export default CadastroMarca;
+export default Cadastro;

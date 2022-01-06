@@ -267,6 +267,26 @@ const Messages: { [k in EnumMsg]: IMessageValue } = {
 		es: "Regreso",
 		ptBR: "Voltar",
 	},
+	[EnumMsg.Cancelar]: {
+		enUS: "Cancel",
+		es: "Cancelar",
+		ptBR: "Cancelar",
+	},
+	[EnumMsg.Confirmacao]: {
+		enUS: "Confirmation",
+		es: "Confirmación",
+		ptBR: "Confirmação",
+	},
+	[EnumMsg.ORegistroSeraExcluidoPermanentemente]: {
+		enUS: "The record will be permanently deleted",
+		es: "El registro se eliminará de forma permanente",
+		ptBR: "O registro será excluído permanentemente",
+	},
+	[EnumMsg.OrigemProspect]: {
+		enUS: "Prospect origin",
+		es: "Origen prospect",
+		ptBR: "Origem prospect",
+	},
 };
 
 export default Messages;

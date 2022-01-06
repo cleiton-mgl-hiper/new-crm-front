@@ -1,7 +1,7 @@
-import { IConfigField } from "../../../components/formik/Form/interfaces/IConfigField";
-import EnumFieldType from "../../../components/formik/Form/enums/EnumFieldType";
+import { IConfigField } from "../../components/formik/Form/interfaces/IConfigField";
+import EnumFieldType from "../../components/formik/Form/enums/EnumFieldType";
 import validator from "validator";
-import EnumMsg from "../../../translate/enums/EnumMsg";
+import EnumMsg from "../../translate/enums/EnumMsg";
 
 export const configCadastro: IConfigField[] = [
 	{

@@ -4,8 +4,9 @@ import LoginPage from "../pages/Login";
 import DashboardPage from "../pages/Dashboard";
 import MarcasPage from "../pages/Marcas";
 import EnumMsg from "../translate/enums/EnumMsg";
-import { MdDashboard, MdAccountBox, MdMonetizationOn, MdPermPhoneMsg, MdDesignServices, MdGroupWork, MdOutlineGroupWork, MdSettings } from "react-icons/md";
+import { MdDashboard, MdAccountBox, MdMonetizationOn, MdDesignServices, MdGroupWork, MdOutlineGroupWork, MdSettings, MdControlPoint } from "react-icons/md";
 import EnumMenuGroup from "./enums/EnumMenuGroup";
+import OrigemProspectPage from "../pages/OrigemProspect";
 
 const routes: ICrmRouteProps[] = [
 	//#region NÃO TEM NO MENU *********
@@ -53,11 +54,11 @@ const routes: ICrmRouteProps[] = [
 		menuGroup: EnumMenuGroup.Comercial,
 	},
 	{
-		path: "/interacoes",
-		component: DashboardPage,
+		path: "/origemprospect",
+		component: OrigemProspectPage,
 		layout: Layout,
-		name: EnumMsg.Interacoes,
-		icon: MdPermPhoneMsg,
+		name: EnumMsg.OrigemProspect,
+		icon: MdControlPoint,
 		isPrivate: true,
 		displayOnMenu: true,
 		menuGroup: EnumMenuGroup.Comercial,

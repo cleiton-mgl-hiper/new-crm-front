@@ -10,7 +10,7 @@ const TextField: FC<IProps> = (props) => {
 		<Input
 			{...props}
 			name={inputProps.name}
-			value={inputProps.value || ""}
+			value={inputProps.value?.toString() || ""}
 			onChange={(value, e) => e && inputProps.onChange(e)}
 			onBlur={(e) => e && inputProps.onBlur(e)}
 			errors={meta.error?.length ? [meta.error] : []}

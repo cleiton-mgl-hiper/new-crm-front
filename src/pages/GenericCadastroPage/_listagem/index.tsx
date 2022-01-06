@@ -1,33 +1,54 @@
-import { FC, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import IProps from "./interfaces/IProps";
 import DataGrid, { Scrolling, LoadPanel, Column, SearchPanel } from "devextreme-react/data-grid";
-import IMarca from "../_cadastro/interfaces/IMarca";
-import { MarcasServiceModule as service } from "../../../services/crmApiService";
 import { useAuth } from "../../../contexts/AuthContext";
 import notify from "devextreme/ui/notify";
 import { useTranslate } from "../../../contexts/TranslateContext";
 import EnumMsg from "../../../translate/enums/EnumMsg";
 import IconButton from "../../../components/IconButton";
 import { MdDelete, MdEdit } from "react-icons/md";
+import Confirm from "../../../components/Confirm";
 
-const ListagemMarcas: FC<IProps> = ({ onEdit }) => {
-	const [lista, setLista] = useState<IMarca[]>([]);
+function Listagem<T>({ onEdit, service }: IProps<T>) {
+	const [lista, setLista] = useState<T[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
+	const [idDelete, setIdDelete] = useState<number>(0);
 
 	const {
 		state: { user },
 	} = useAuth();
 	const { translate } = useTranslate();
 
-	useEffect(() => {
+	const handleRefresh = useCallback(
+		(empresa: number) => {
+			service
+				.get(empresa)
+				.then(setLista)
+				.catch((err) => {
+					notify(translate(EnumMsg.ErroInesperado), "warning", 2000);
+					console.error(err);
+				});
+		},
+		[translate, service]
+	);
+
+	const handleDelete = () => {
 		service
-			.get(user?.empresaAtiva || 0)
-			.then(setLista)
+			.delete(idDelete, user?.empresaAtiva || 0)
+			.then(() => {
+				notify(translate(EnumMsg.Sucesso), "success", 2000);
+				setIdDelete(0);
+				handleRefresh(user?.empresaAtiva || 0);
+			})
 			.catch((err) => {
 				notify(translate(EnumMsg.ErroInesperado), "warning", 2000);
 				console.error(err);
 			});
-	}, [user?.empresaAtiva, translate]);
+	};
+
+	useEffect(() => {
+		handleRefresh(user?.empresaAtiva || 0);
+	}, [user?.empresaAtiva, handleRefresh]);
 
 	return (
 		<>
@@ -40,10 +61,11 @@ const ListagemMarcas: FC<IProps> = ({ onEdit }) => {
 				<Column dataField="codigo" caption={translate(EnumMsg.Codigo)} />
 				<Column dataField="descricao" caption={translate(EnumMsg.Descricao)} />
 				<Column cellRender={({ data }) => <IconButton icon={MdEdit} variant="outlined" color="secondary" onClick={() => onEdit(data.id)} />} width={50} />
-				<Column cellRender={() => <IconButton icon={MdDelete} variant="outlined" />} width={50} />
+				<Column cellRender={({ data }) => <IconButton icon={MdDelete} variant="outlined" onClick={() => setIdDelete(data.id)} />} width={50} />
 			</DataGrid>
+			<Confirm handleCancel={() => setIdDelete(0)} handleConfirm={handleDelete} message={EnumMsg.ORegistroSeraExcluidoPermanentemente} open={!!idDelete} />
 		</>
 	);
-};
+}
 
-export default ListagemMarcas;
+export default Listagem;
