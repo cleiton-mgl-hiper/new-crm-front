@@ -287,6 +287,11 @@ const Messages: { [k in EnumMsg]: IMessageValue } = {
 		es: "Origen prospect",
 		ptBR: "Origem prospect",
 	},
+	[EnumMsg.Regiao]: {
+		enUS: "Region",
+		es: "Região",
+		ptBR: "Região",
+	},
 };
 
 export default Messages;

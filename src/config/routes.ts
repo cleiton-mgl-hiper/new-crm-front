@@ -4,9 +4,20 @@ import LoginPage from "../pages/Login";
 import DashboardPage from "../pages/Dashboard";
 import MarcasPage from "../pages/Marcas";
 import EnumMsg from "../translate/enums/EnumMsg";
-import { MdDashboard, MdAccountBox, MdMonetizationOn, MdDesignServices, MdGroupWork, MdOutlineGroupWork, MdSettings, MdControlPoint } from "react-icons/md";
+import {
+	MdDashboard,
+	MdAccountBox,
+	MdMonetizationOn,
+	MdDesignServices,
+	MdGroupWork,
+	MdOutlineGroupWork,
+	MdSettings,
+	MdControlPoint,
+	MdMap,
+} from "react-icons/md";
 import EnumMenuGroup from "./enums/EnumMenuGroup";
 import OrigemProspectPage from "../pages/OrigemProspect";
+import RegioesPage from "../pages/Regioes";
 
 const routes: ICrmRouteProps[] = [
 	//#region NÃO TEM NO MENU *********
@@ -100,6 +111,16 @@ const routes: ICrmRouteProps[] = [
 
 	//#region CONFIGURAÇÕES
 
+	{
+		path: "/regioes",
+		layout: Layout,
+		name: EnumMsg.Regiao,
+		icon: MdMap,
+		isPrivate: true,
+		displayOnMenu: true,
+		menuGroup: EnumMenuGroup.Configuracoes,
+		component: RegioesPage,
+	},
 	{
 		path: "/configuracao",
 		layout: Layout,

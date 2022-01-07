@@ -56,6 +56,7 @@ enum EnumMsg {
 	Confirmacao,
 	ORegistroSeraExcluidoPermanentemente,
 	OrigemProspect,
+	Regiao,
 }
 
 export default EnumMsg;
